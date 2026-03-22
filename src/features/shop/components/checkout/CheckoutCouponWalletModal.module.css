@@ -1,0 +1,684 @@
+/* Modal overlay: popup center, nền mờ + blur */
+.checkout-coupon-wallet {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  overflow: auto;
+}
+
+.checkout-coupon-wallet__wrapper {
+  width: 100%;
+  max-width: 600px;
+  max-height: min(90vh, 700px);
+  background: var(--secondary, #191414);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Header - sticky, blur, border primary/20 */
+.checkout-coupon-wallet__header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(25, 20, 20, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(29, 185, 84, 0.2);
+  padding: 20px 24px;
+}
+
+.checkout-coupon-wallet__header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.checkout-coupon-wallet__header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkout-coupon-wallet__back {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--primary);
+  cursor: pointer;
+  border-radius: var(--border-radius-full);
+  transition: background-color 0.2s ease;
+}
+
+.checkout-coupon-wallet__back:hover {
+  background: rgba(29, 185, 84, 0.1);
+}
+
+.checkout-coupon-wallet__back svg {
+  width: 24px;
+  height: 24px;
+}
+
+.checkout-coupon-wallet__title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: rgba(241, 245, 249, 1);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.checkout-coupon-wallet__subtitle {
+  font-size: 12px;
+  color: rgba(148, 163, 184, 1);
+  margin: 4px 0 0;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.checkout-coupon-wallet__enter-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-full);
+  border: none;
+  background: var(--primary);
+  color: #191414;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.checkout-coupon-wallet__enter-code:hover {
+  filter: brightness(0.95);
+}
+
+.checkout-coupon-wallet__enter-code svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Tabs */
+.checkout-coupon-wallet__tabs {
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  background: var(--background-homepage, #122017);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.checkout-coupon-wallet__tab {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: rgba(148, 163, 184, 1);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.checkout-coupon-wallet__tab:hover {
+  color: var(--primary);
+}
+
+.checkout-coupon-wallet__tab--active {
+  background: var(--primary);
+  color: #191414;
+  box-shadow: 0 4px 14px rgba(29, 185, 84, 0.2);
+}
+
+/* Main scroll area */
+.checkout-coupon-wallet__main {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.checkout-coupon-wallet__main::-webkit-scrollbar {
+  width: 4px;
+}
+
+.checkout-coupon-wallet__main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.checkout-coupon-wallet__main::-webkit-scrollbar-thumb {
+  background: rgba(41, 56, 46, 1);
+  border-radius: 9999px;
+}
+
+.checkout-coupon-wallet__section {
+  margin: 0;
+}
+
+.checkout-coupon-wallet__section + .checkout-coupon-wallet__section {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.checkout-coupon-wallet__section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.checkout-coupon-wallet__section-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--primary);
+  margin: 0;
+}
+
+.checkout-coupon-wallet__section-title svg {
+  width: 18px;
+  height: 18px;
+}
+
+.checkout-coupon-wallet__section-count {
+  font-size: 10px;
+  color: rgba(100, 116, 139, 1);
+  font-weight: 500;
+}
+
+.checkout-coupon-wallet__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Voucher card - ticket mask (notches left/right) */
+.checkout-coupon-wallet__card-wrap {
+  position: relative;
+}
+
+.checkout-coupon-wallet__card {
+  display: flex;
+  align-items: stretch;
+  min-height: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #231f1f;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    opacity 0.2s ease;
+  mask-image: radial-gradient(
+        circle at 0 50%,
+        transparent 12px,
+        black 13px
+      ),
+      radial-gradient(
+        circle at 100% 50%,
+        transparent 12px,
+        black 13px
+      );
+  mask-position: left, right;
+  mask-size: 51% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: radial-gradient(
+        circle at 0 50%,
+        transparent 12px,
+        black 13px
+      ),
+      radial-gradient(
+        circle at 100% 50%,
+        transparent 12px,
+        black 13px
+      );
+  -webkit-mask-position: left, right;
+  -webkit-mask-size: 51% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.checkout-coupon-wallet__card-wrap:focus-within .checkout-coupon-wallet__card,
+.checkout-coupon-wallet__card:hover {
+  border-color: rgba(29, 185, 84, 0.5);
+  box-shadow: 0 0 20px rgba(29, 185, 84, 0.15);
+}
+
+.checkout-coupon-wallet__card--applicable:hover {
+  border-color: rgba(29, 185, 84, 0.5);
+  box-shadow: 0 0 20px rgba(29, 185, 84, 0.15);
+}
+
+.checkout-coupon-wallet__card--premium:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.checkout-coupon-wallet__card--selected {
+  border-color: var(--primary);
+  box-shadow: 0 12px 30px rgba(29, 185, 84, 0.25);
+}
+
+.checkout-coupon-wallet__card--disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
+.checkout-coupon-wallet__card--disabled:hover {
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+}
+
+/* Left strip - icon + label */
+.checkout-coupon-wallet__card-strip {
+  width: 96px;
+  min-width: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: #191414;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.checkout-coupon-wallet__card-strip svg {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 4px;
+}
+
+.checkout-coupon-wallet__card-strip--discount {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    #168a3e 100%
+  );
+}
+
+.checkout-coupon-wallet__card-strip--premium {
+  background: linear-gradient(
+    135deg,
+    var(--accent) 0%,
+    #b8860b 50%,
+    var(--accent) 100%
+  );
+}
+
+.checkout-coupon-wallet__card-strip--ship {
+  background: #3d5244;
+  color: var(--primary);
+}
+
+.checkout-coupon-wallet__card-strip--ship-hot {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--secondary) 100%
+  );
+  color: white;
+}
+
+/* Card body */
+.checkout-coupon-wallet__card-body {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.checkout-coupon-wallet__card--disabled .checkout-coupon-wallet__card-body {
+  opacity: 0.8;
+}
+
+.checkout-coupon-wallet__card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.checkout-coupon-wallet__badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.checkout-coupon-wallet__badge--ok {
+  background: rgba(29, 185, 84, 0.2);
+  color: var(--primary);
+}
+
+.checkout-coupon-wallet__badge--muted {
+  background: rgba(30, 41, 59, 1);
+  color: rgba(148, 163, 184, 1);
+}
+
+.checkout-coupon-wallet__badge--premium {
+  background: rgba(255, 215, 0, 0.2);
+  color: var(--accent);
+}
+
+.checkout-coupon-wallet__badge--hot {
+  background: var(--primary);
+  color: #191414;
+}
+
+.checkout-coupon-wallet__expiry {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: rgba(100, 116, 139, 1);
+  font-weight: 500;
+}
+
+.checkout-coupon-wallet__expiry svg {
+  width: 12px;
+  height: 12px;
+}
+
+.checkout-coupon-wallet__code {
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.checkout-coupon-wallet__desc {
+  font-size: 12px;
+  color: rgba(148, 163, 184, 1);
+  margin: 8px 0 0;
+  line-height: 1.4;
+}
+
+.checkout-coupon-wallet__card-footer {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.checkout-coupon-wallet__validity {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.checkout-coupon-wallet__card--disabled .checkout-coupon-wallet__validity {
+  color: rgba(100, 116, 139, 1);
+}
+
+.checkout-coupon-wallet__card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 16px;
+  border-radius: var(--border-radius-full);
+  border: 1px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.checkout-coupon-wallet__card-btn:hover {
+  background: var(--primary);
+  color: #191414;
+}
+
+.checkout-coupon-wallet__card-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.checkout-coupon-wallet__card-btn--selected {
+  background: var(--primary);
+  color: #191414;
+  border-color: transparent;
+  cursor: default;
+}
+
+.checkout-coupon-wallet__card-btn--disabled {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(100, 116, 139, 1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: not-allowed;
+}
+
+/* Empty promo placeholder */
+.checkout-coupon-wallet__empty-promo {
+  padding: 48px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0.4;
+}
+
+.checkout-coupon-wallet__empty-promo-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--border-radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.checkout-coupon-wallet__empty-promo-icon svg {
+  width: 28px;
+  height: 28px;
+  color: rgba(148, 163, 184, 1);
+}
+
+.checkout-coupon-wallet__empty-promo p {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(148, 163, 184, 1);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.checkout-coupon-wallet__empty,
+.checkout-coupon-wallet__error {
+  font-size: 13px;
+  color: rgba(148, 163, 184, 1);
+  margin: 0;
+}
+
+.checkout-coupon-wallet__error {
+  color: var(--error, #f44336);
+}
+
+/* Footer - fixed style */
+.checkout-coupon-wallet__footer {
+  padding: 24px;
+  background: #191414;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.checkout-coupon-wallet__footer-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.checkout-coupon-wallet__footer-savings,
+.checkout-coupon-wallet__footer-applied {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.checkout-coupon-wallet__footer-label {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: rgba(148, 163, 184, 1);
+}
+
+.checkout-coupon-wallet__footer-amount {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.checkout-coupon-wallet__footer-hint {
+  margin-top: 2px;
+  font-size: 11px;
+  color: rgba(148, 163, 184, 1);
+}
+
+.checkout-coupon-wallet__footer-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.checkout-coupon-wallet__footer-chip {
+  padding: 2px 8px;
+  background: rgba(29, 185, 84, 0.1);
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.checkout-coupon-wallet__footer-chip--none {
+  font-size: 10px;
+  color: rgba(100, 116, 139, 1);
+  font-style: italic;
+}
+
+.checkout-coupon-wallet__confirm-btn {
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: none;
+  background: var(--primary);
+  color: #191414;
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.05s ease;
+  box-shadow: 0 4px 14px rgba(29, 185, 84, 0.2);
+}
+
+.checkout-coupon-wallet__confirm-btn:hover {
+  filter: brightness(0.95);
+}
+
+.checkout-coupon-wallet__confirm-btn:active {
+  transform: scale(0.98);
+}
+
+.checkout-coupon-wallet__confirm-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Background glows */
+.checkout-coupon-wallet__glow {
+  position: absolute;
+  top: -96px;
+  left: -96px;
+  width: 256px;
+  height: 256px;
+  background: rgba(29, 185, 84, 0.05);
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.checkout-coupon-wallet__glow--right {
+  position: absolute;
+  top: 50%;
+  right: -96px;
+  width: 256px;
+  height: 256px;
+  background: rgba(255, 215, 0, 0.05);
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .checkout-coupon-wallet__main {
+    padding: 16px;
+  }
+
+  .checkout-coupon-wallet__header {
+    padding: 16px;
+  }
+
+  .checkout-coupon-wallet__card-strip {
+    width: 72px;
+    min-width: 72px;
+    padding: 6px;
+    font-size: 9px;
+  }
+
+  .checkout-coupon-wallet__card-strip svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .checkout-coupon-wallet__footer {
+    padding: 16px;
+  }
+}

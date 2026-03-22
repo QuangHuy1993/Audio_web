@@ -1,0 +1,148 @@
+.container {
+    width: 100%;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.loading,
+.empty {
+    text-align: center;
+    padding: 60px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    color: var(--color-text-secondary);
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.shopLink {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 24px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    border-color: rgba(29, 185, 84, 0.2);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.productInfo {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.productImage {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.productName {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 4px 0;
+}
+
+.date {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.rating {
+    display: flex;
+    gap: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px 10px;
+    border-radius: 12px;
+}
+
+.comment {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 24px;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+.noComment {
+    color: rgba(255, 255, 255, 0.3);
+    font-style: italic;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+}
+
+.actionBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.actionBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.deleteBtn:hover {
+    background: rgba(255, 75, 75, 0.1);
+    color: #ff4b4b;
+    border-color: rgba(255, 75, 75, 0.2);
+}
+
+.viewBtn {
+    background: transparent;
+    color: var(--color-primary);
+    border-color: rgba(29, 185, 84, 0.2);
+}
+
+.viewBtn:hover {
+    background: rgba(29, 185, 84, 0.1);
+    border-color: var(--color-primary);
+}

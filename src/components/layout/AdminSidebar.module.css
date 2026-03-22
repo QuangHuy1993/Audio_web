@@ -1,0 +1,292 @@
+/* BEM block: admin-sidebar-sidebar */
+.admin-sidebar-sidebar {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 260px;
+  background: var(--background-homepage);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px 16px;
+  box-shadow: var(--shadow-secondary);
+  z-index: 20;
+}
+
+.admin-sidebar-sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.admin-sidebar-sidebar__logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-primary);
+  color: var(--text-light);
+  flex-shrink: 0;
+}
+
+.admin-sidebar-sidebar__logo-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.admin-sidebar-sidebar__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.admin-sidebar-sidebar__brand-title {
+  font-size: 1.05rem;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.admin-sidebar-sidebar__brand-title-highlight {
+  color: var(--primary);
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.admin-sidebar-sidebar__back-to-shop {
+  margin-top: 2px;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease, transform 0.08s ease;
+}
+
+.admin-sidebar-sidebar__back-to-shop-icon {
+  font-size: 14px;
+}
+
+.admin-sidebar-sidebar__back-to-shop-label {
+  white-space: nowrap;
+}
+
+.admin-sidebar-sidebar__back-to-shop:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.36);
+  box-shadow: 0 0 0 1px rgba(29, 185, 84, 0.35);
+  transform: translateY(-1px);
+}
+
+.admin-sidebar-sidebar__back-to-shop:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.admin-sidebar-sidebar__nav {
+  flex: 1;
+  padding-block: 4px;
+  overflow-y: auto;
+}
+
+.admin-sidebar-sidebar__nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-sidebar-sidebar__nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-sidebar-sidebar__nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  background: transparent;
+}
+
+.admin-sidebar-sidebar__nav-link-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.admin-sidebar-sidebar__nav-link-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-sidebar-sidebar__nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--text-light);
+}
+
+.admin-sidebar-sidebar__nav-link--active {
+  background: var(--primary);
+  color: var(--text-light);
+  font-weight: 600;
+  box-shadow: 0 2px 12px rgba(29, 185, 84, 0.28);
+}
+
+.admin-sidebar-sidebar__nav-link--active-group {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.admin-sidebar-sidebar__nav-link--active:hover {
+  background: var(--primary-light);
+  box-shadow: 0 2px 14px rgba(29, 185, 84, 0.32);
+}
+
+.admin-sidebar-sidebar__nav-sub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 2px;
+  padding-left: 32px;
+}
+
+.admin-sidebar-sidebar__nav-sub-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 9999px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+.admin-sidebar-sidebar__nav-sub-link:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--text-light);
+}
+
+.admin-sidebar-sidebar__nav-sub-link--active {
+  background: var(--primary);
+  color: var(--text-light);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(29, 185, 84, 0.3);
+}
+
+.admin-sidebar-sidebar__nav-sub-link-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--primary-lighter);
+}
+
+.admin-sidebar-sidebar__nav-sub-link-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-sidebar-sidebar__user {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.admin-sidebar-sidebar__user-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+}
+
+.admin-sidebar-sidebar__user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.admin-sidebar-sidebar__user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-sidebar-sidebar__user-name {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-sidebar-sidebar__user-role {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-sidebar-sidebar__user-logout {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 9999px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.admin-sidebar-sidebar__user-logout:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-light);
+}
+
+.admin-sidebar-sidebar__user-logout svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 1024px) {
+  .admin-sidebar-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    box-shadow: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+}

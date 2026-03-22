@@ -1,0 +1,677 @@
+/* BEM block: admin-promotion-management-page
+ * Quản lý mã giảm giá; layout và style đồng bộ với admin-product-management-page.
+ */
+
+.admin-promotion-management-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.admin-promotion-management-page__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 80px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+.admin-promotion-management-page__header-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-promotion-management-page__header-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.admin-promotion-management-page__header-subtitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-promotion-management-page__primary-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: var(--text-light);
+  border-radius: var(--border-radius-lg);
+  border: none;
+  cursor: pointer;
+  background: var(--gradient-primary);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: var(--shadow-primary);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.admin-promotion-management-page__primary-button:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(29, 185, 84, 0.3);
+}
+
+.admin-promotion-management-page__primary-button-icon {
+  font-size: 20px;
+}
+
+.admin-promotion-management-page__content {
+  padding: 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-promotion-management-page__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.admin-promotion-management-page__stat-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-xl);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-promotion-management-page__stat-card:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+  border-color: var(--border-color-dark);
+}
+
+.admin-promotion-management-page__stat-card-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--primary);
+  opacity: 0.2;
+  transition: opacity 0.2s ease;
+}
+
+.admin-promotion-management-page__stat-card:hover .admin-promotion-management-page__stat-card-icon {
+  opacity: 0.35;
+}
+
+.admin-promotion-management-page__stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__stat-value-row {
+  margin-top: 12px;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.admin-promotion-management-page__stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.admin-promotion-management-page__stat-note {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__filter-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-xl);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-promotion-management-page__filter-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1 1 400px;
+}
+
+.admin-promotion-management-page__search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 360px;
+}
+
+.admin-promotion-management-page__search-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__search-input {
+  width: 100%;
+  padding: 10px 12px 10px 38px;
+  border-radius: var(--border-radius-lg);
+  border: none;
+  background: var(--background-secondary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.admin-promotion-management-page__search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__search-input:focus {
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2);
+}
+
+.admin-promotion-management-page__type-tabs {
+  display: flex;
+  align-items: center;
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 4px;
+  gap: 4px;
+}
+
+.admin-promotion-management-page__type-tab {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--border-radius-md);
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-promotion-management-page__type-tab:hover {
+  color: var(--text-secondary);
+}
+
+.admin-promotion-management-page__type-tab--active {
+  background: #ffffff;
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-promotion-management-page__select {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--border-radius-lg);
+  border: none;
+  background: var(--background-secondary);
+  outline: none;
+  min-width: 140px;
+  color: var(--text-secondary);
+}
+
+.admin-promotion-management-page__select:focus {
+  box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2);
+}
+
+.admin-promotion-management-page__table-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-xl);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.admin-promotion-management-page__table-wrapper {
+  width: 100%;
+  position: relative;
+  overflow-x: auto;
+}
+
+.admin-promotion-management-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.admin-promotion-management-page__table-head-row {
+  background: var(--background-secondary);
+}
+
+.admin-promotion-management-page__table-head-cell {
+  padding: 16px 24px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.admin-promotion-management-page__table-body-row {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.15s ease;
+}
+
+.admin-promotion-management-page__table-body-row:hover {
+  background-color: rgba(249, 250, 251, 0.7);
+}
+
+.admin-promotion-management-page__table-cell {
+  padding: 16px 24px;
+  vertical-align: middle;
+}
+
+.admin-promotion-management-page__table-head-cell--status,
+.admin-promotion-management-page__table-cell--status {
+  min-width: 140px;
+  white-space: nowrap;
+}
+
+.admin-promotion-management-page__code-cell-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-promotion-management-page__code-text {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.admin-promotion-management-page__code-meta {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__code-meta--primary {
+  color: var(--primary);
+}
+
+.admin-promotion-management-page__type-cell-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-promotion-management-page__type-icon {
+  font-size: 18px;
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__type-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-promotion-management-page__value-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.admin-promotion-management-page__usage-bar-wrap {
+  width: 160px;
+}
+
+.admin-promotion-management-page__usage-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.admin-promotion-management-page__usage-bar-labels--limit-reached {
+  color: var(--error);
+}
+
+.admin-promotion-management-page__usage-bar-track {
+  width: 100%;
+  height: 6px;
+  background: var(--background-tertiary);
+  border-radius: var(--border-radius-full);
+  overflow: hidden;
+}
+
+.admin-promotion-management-page__usage-bar-fill {
+  height: 100%;
+  border-radius: var(--border-radius-full);
+  background: var(--primary);
+  transition: width 0.25s ease;
+}
+
+.admin-promotion-management-page__usage-bar-fill--full {
+  background: var(--error);
+}
+
+.admin-promotion-management-page__validity {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-promotion-management-page__validity span {
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__toggle-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  vertical-align: middle;
+  min-height: 24px;
+}
+
+.admin-promotion-management-page__toggle {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: var(--border-radius-full);
+  background: var(--border-color-dark);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.admin-promotion-management-page__toggle--checked {
+  background: var(--primary);
+}
+
+.admin-promotion-management-page__toggle--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-promotion-management-page__toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease;
+}
+
+.admin-promotion-management-page__toggle--checked .admin-promotion-management-page__toggle-thumb {
+  transform: translateX(16px);
+  border-color: var(--primary);
+}
+
+.admin-promotion-management-page__status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-promotion-management-page__status-badge--active {
+  color: var(--primary);
+}
+
+.admin-promotion-management-page__status-badge--scheduled {
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__status-badge--expired {
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__action-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-promotion-management-page__icon-button {
+  border: none;
+  background: transparent;
+  padding: 8px;
+  border-radius: var(--border-radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+}
+
+.admin-promotion-management-page__icon-button:hover {
+  background: var(--background-secondary);
+  color: var(--primary);
+}
+
+.admin-promotion-management-page__icon-button svg {
+  font-size: 20px;
+}
+
+.admin-promotion-management-page__empty-row {
+  padding: 32px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__pagination {
+  padding: 16px 24px;
+  background: var(--background-secondary);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-promotion-management-page__pagination-text {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.admin-promotion-management-page__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-promotion-management-page__pagination-button {
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.admin-promotion-management-page__pagination-button:hover {
+  background: var(--background-secondary);
+  color: var(--primary);
+}
+
+.admin-promotion-management-page__pagination-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.admin-promotion-management-page__page-pill {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius-md);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-tertiary);
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-promotion-management-page__page-pill--active {
+  background: var(--primary);
+  color: var(--text-light);
+  box-shadow: var(--shadow-primary);
+}
+
+.admin-promotion-management-page__page-pill:not(.admin-promotion-management-page__page-pill--active):hover {
+  background: var(--background-secondary);
+  color: var(--secondary);
+}
+
+.admin-promotion-management-page__ai-banner {
+  background: var(--overlay-primary);
+  border: 1px solid rgba(29, 185, 84, 0.2);
+  border-radius: var(--border-radius-lg);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.admin-promotion-management-page__ai-banner-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.admin-promotion-management-page__ai-banner-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-promotion-management-page__ai-banner-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.admin-promotion-management-page__ai-banner-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.admin-promotion-management-page__ai-banner-text strong {
+  color: var(--primary);
+}
+
+@media (max-width: 1024px) {
+  .admin-promotion-management-page__header {
+    padding-inline: 20px;
+  }
+
+  .admin-promotion-management-page__content {
+    padding-inline: 20px;
+  }
+
+  .admin-promotion-management-page__filter-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-promotion-management-page__filter-left {
+    flex-wrap: wrap;
+  }
+
+  .admin-promotion-management-page__search-wrapper {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-promotion-management-page__header {
+    padding-inline: 16px;
+    height: auto;
+    padding-block: 16px;
+    gap: 12px;
+  }
+
+  .admin-promotion-management-page__header-title {
+    font-size: 20px;
+  }
+
+  .admin-promotion-management-page__content {
+    padding-inline: 16px;
+  }
+
+  .admin-promotion-management-page__table-head-cell,
+  .admin-promotion-management-page__table-cell {
+    padding: 12px 16px;
+  }
+
+  .admin-promotion-management-page__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-promotion-management-page__type-tabs {
+    flex-wrap: wrap;
+  }
+}

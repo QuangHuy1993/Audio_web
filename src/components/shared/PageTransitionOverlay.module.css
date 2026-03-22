@@ -1,0 +1,143 @@
+.page-transition-overlay-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--overlay-light);
+  backdrop-filter: blur(14px);
+}
+
+.page-transition-overlay-overlay__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 32px 28px 40px;
+  border-radius: 24px;
+  background: var(--background);
+  box-shadow: var(--shadow-xl);
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+
+.page-transition-overlay-overlay__brand-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.page-transition-overlay-overlay__brand-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-primary);
+  color: var(--text-light);
+  box-shadow: var(--shadow-primary);
+}
+
+.page-transition-overlay-overlay__brand-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.page-transition-overlay-overlay__brand-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.page-transition-overlay-overlay__brand-title {
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.page-transition-overlay-overlay__brand-title-highlight {
+  color: var(--primary);
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.page-transition-overlay-overlay__brand-subtitle {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.page-transition-overlay-overlay__dots-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.page-transition-overlay-overlay__dot-primary,
+.page-transition-overlay-overlay__dot-accent,
+.page-transition-overlay-overlay__dot-neutral {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.18);
+}
+
+.page-transition-overlay-overlay__dot-primary {
+  background: var(--primary);
+  box-shadow: var(--shadow-primary);
+}
+
+.page-transition-overlay-overlay__dot-accent {
+  background: var(--accent);
+  box-shadow: var(--shadow-accent);
+}
+
+.page-transition-overlay-overlay__dot-neutral {
+  background: var(--background-dark);
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.18);
+}
+
+.page-transition-overlay-overlay__bottom-text {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.page-transition-overlay-overlay__texture-layer {
+  position: fixed;
+  inset: 0;
+  opacity: 0.06;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_NHi_B1p2bA7MSYDcsf7I89RMZIGkVHQ09LdXGLmS0BWoL3KODJOoMxH4BVyCTHLOcI_tziPx94BsJPRouq79SFd_jluzMKEP99sllz_zNwELuMRcaD69991NF1LDOwMS7U46bvAxcMboULEHseyQXBnnqaJvxyLhAW3IRyKrmF-wZQak754n_y_DH3T52B1JhZFaJKHVAz1aN9xChj1mjxtLAaEpNOofxMYq63IgCYaMTNsRZl_sfI7D7amKghM0ICV4F3N929-G");
+}
+
+@media (min-width: 640px) {
+  .page-transition-overlay-overlay__content {
+    padding: 40px 40px 44px;
+    max-width: 460px;
+  }
+
+  .page-transition-overlay-overlay__brand-title {
+    font-size: 26px;
+  }
+}
+

@@ -1,0 +1,95 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.avgBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 32px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+}
+
+.avgScore {
+    font-size: 64px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+}
+
+.avgStars {
+    display: flex;
+    gap: 4px;
+}
+
+.totalText {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 500;
+}
+
+.bars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.barRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.barLabel {
+    width: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: right;
+}
+
+.barStar {
+    font-size: 14px;
+    color: #ffb340;
+}
+
+.track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    background: linear-gradient(90deg, #1db954 0%, #1ed760 100%);
+    border-radius: 999px;
+}
+
+.barCount {
+    width: 32px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: right;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .container {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .avgBox {
+        flex: 1;
+    }
+
+    .bars {
+        flex: 1.5;
+    }
+}

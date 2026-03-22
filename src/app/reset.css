@@ -1,0 +1,73 @@
+/* CSS Reset cho Audio AI Shop */
+/* Dựa trên các reset hiện đại, tinh gọn để tránh xung đột trình duyệt */
+
+/* Box sizing và margin/padding mặc định */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Thiết lập height cho body và sửa scroll-jump */
+html,
+body {
+  height: 100%;
+}
+
+/* Typography mặc định */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hình ảnh và media */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Input và button kế thừa font */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Liệt kê không style mặc định */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Link */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Table */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Đảm bảo heading không có margin mặc định khác biệt */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: inherit;
+}
+

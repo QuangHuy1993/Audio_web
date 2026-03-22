@@ -1,0 +1,384 @@
+.admin-ai-content-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
+  padding: 32px 28px;
+  gap: 20px;
+}
+
+.admin-ai-content-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-ai-content-page__title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.admin-ai-content-page__subtitle {
+  font-size: 13px;
+  color: var(--text-muted, #6b7280);
+  margin: 4px 0 0;
+}
+
+.admin-ai-content-page__subnav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.1));
+}
+
+.admin-ai-content-page__subnav-link {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted, #6b7280);
+  text-decoration: none;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid transparent;
+  border-bottom: none;
+  transition: color 0.15s;
+}
+
+.admin-ai-content-page__subnav-link:hover {
+  color: var(--text);
+}
+
+.admin-ai-content-page__subnav-link--active {
+  color: var(--primary);
+  background: rgba(255,255,255,0.04);
+  border-color: var(--border-color, rgba(255,255,255,0.1));
+}
+
+.admin-ai-content-page__stat-bar {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.admin-ai-content-page__stat-ok {
+  color: #10b981;
+}
+
+.admin-ai-content-page__stat-partial {
+  color: #f59e0b;
+}
+
+.admin-ai-content-page__stat-none {
+  color: #ef4444;
+}
+
+.admin-ai-content-page__tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.08));
+}
+
+.admin-ai-content-page__tab {
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  color: var(--text-muted, #6b7280);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+}
+
+.admin-ai-content-page__tab:hover {
+  color: var(--text);
+}
+
+.admin-ai-content-page__tab--active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 700;
+}
+
+.admin-ai-content-page__toolbar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.admin-ai-content-page__search-form {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  min-width: 240px;
+}
+
+.admin-ai-content-page__search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.admin-ai-content-page__search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted, #6b7280);
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.admin-ai-content-page__search-input {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+}
+
+.admin-ai-content-page__search-input:focus {
+  border-color: var(--primary);
+}
+
+.admin-ai-content-page__filter-group {
+  display: flex;
+  gap: 6px;
+}
+
+.admin-ai-content-page__filter-btn {
+  padding: 7px 13px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.admin-ai-content-page__filter-btn:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.admin-ai-content-page__filter-btn--active {
+  background: rgba(var(--primary-rgb,79,70,229),0.12);
+  color: var(--primary);
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+.admin-ai-content-page__btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-ai-content-page__btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.admin-ai-content-page__table-wrapper {
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+  border-radius: 12px;
+  min-height: 200px;
+}
+
+.admin-ai-content-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.admin-ai-content-page__table th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted, #6b7280);
+  border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.08));
+  white-space: nowrap;
+  background: rgba(255,255,255,0.02);
+}
+
+.admin-ai-content-page__table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.05));
+  vertical-align: middle;
+  color: var(--text);
+}
+
+.admin-ai-content-page__table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-ai-content-page__row--none {
+  background: rgba(239,68,68,0.03);
+}
+
+.admin-ai-content-page__td-name {
+  min-width: 180px;
+  max-width: 280px;
+  font-weight: 500;
+}
+
+.admin-ai-content-page__name-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-ai-content-page__status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.admin-ai-content-page__status-dot--all { background: #10b981; }
+.admin-ai-content-page__status-dot--partial { background: #f59e0b; }
+.admin-ai-content-page__status-dot--none { background: #ef4444; }
+
+.admin-ai-content-page__td-meta {
+  font-size: 12px;
+  color: var(--text-muted, #6b7280);
+  white-space: nowrap;
+}
+
+.admin-ai-content-page__badge-ok {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 11px;
+  background: rgba(16,185,129,0.12);
+  color: #10b981;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.admin-ai-content-page__badge-missing {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 11px;
+  background: rgba(239,68,68,0.1);
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.admin-ai-content-page__actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.admin-ai-content-page__btn-ai {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(var(--primary-rgb,79,70,229),0.3);
+  background: rgba(var(--primary-rgb,79,70,229),0.08);
+  color: var(--primary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.admin-ai-content-page__btn-ai:hover {
+  background: rgba(var(--primary-rgb,79,70,229),0.15);
+}
+
+.admin-ai-content-page__btn-edit {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+  background: transparent;
+  color: var(--text-muted, #6b7280);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.admin-ai-content-page__btn-edit:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.05);
+}
+
+.admin-ai-content-page__empty {
+  text-align: center;
+  padding: 48px !important;
+  color: var(--text-muted, #6b7280);
+  font-style: italic;
+}
+
+.admin-ai-content-page__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.admin-ai-content-page__btn-page {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-ai-content-page__btn-page:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.admin-ai-content-page__page-info {
+  font-size: 13px;
+  color: var(--text-muted, #6b7280);
+}

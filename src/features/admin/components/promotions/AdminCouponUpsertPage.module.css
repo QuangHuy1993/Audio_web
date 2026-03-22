@@ -1,0 +1,41 @@
+/* BEM block: admin-coupon-upsert-page
+ * Trang full màn hình tạo/sửa mã giảm giá (không popup).
+ * Nội dung form dùng chung class với AdminCouponUpsertModal.
+ */
+
+.admin-coupon-upsert-page {
+  flex: 1;
+  min-height: 100vh;
+  background: var(--background);
+  padding: 24px 32px 32px;
+}
+
+.admin-coupon-upsert-page__panel {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  padding: 24px 28px 28px;
+}
+
+.admin-coupon-upsert-page__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 640px) {
+  .admin-coupon-upsert-page {
+    padding: 16px;
+  }
+
+  .admin-coupon-upsert-page__panel {
+    padding: 16px 18px;
+  }
+}

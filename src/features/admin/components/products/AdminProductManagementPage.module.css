@@ -1,0 +1,698 @@
+/* BEM block: admin-product-management-page
+ * Layout, màu sắc, table, pagination và stats giữ đồng bộ với admin-brand-management-page.
+ */
+
+.admin-product-management-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.admin-product-management-page__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 80px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+.admin-product-management-page__header-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-product-management-page__header-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.admin-product-management-page__header-subtitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-product-management-page__primary-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: var(--text-light);
+  border-radius: var(--border-radius-lg);
+  border: none;
+  cursor: pointer;
+  background: var(--gradient-primary);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: var(--shadow-primary);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.admin-product-management-page__primary-button:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(29, 185, 84, 0.3);
+}
+
+.admin-product-management-page__primary-button-icon {
+  font-size: 20px;
+}
+
+.admin-product-management-page__content {
+  padding: 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-product-management-page__filter-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-product-management-page__filter-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1 1 400px;
+}
+
+.admin-product-management-page__search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.admin-product-management-page__search-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__search-input {
+  width: 100%;
+  padding: 8px 12px 8px 38px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.admin-product-management-page__search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__search-input:focus {
+  background: #ffffff;
+  border-color: var(--border-primary);
+  box-shadow: 0 0 0 1px rgba(29, 185, 84, 0.35);
+}
+
+.admin-product-management-page__select {
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  outline: none;
+  min-width: 180px;
+}
+
+.admin-product-management-page__select:focus {
+  border-color: var(--border-primary);
+}
+
+.admin-product-management-page__filter-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-product-management-page__filter-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-product-management-page__filter-button:hover {
+  background: var(--background-secondary);
+  border-color: var(--border-primary);
+  color: var(--primary);
+}
+
+.admin-product-management-page__table-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.admin-product-management-page__table-wrapper {
+  width: 100%;
+  position: relative;
+  overflow-x: auto;
+}
+
+.admin-product-management-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.admin-product-management-page__table-head-row {
+  background: rgba(249, 250, 251, 0.7);
+}
+
+.admin-product-management-page__table-head-cell {
+  padding: 16px 24px;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.admin-product-management-page__table-head-cell--center {
+  text-align: center;
+}
+
+.admin-product-management-page__table-head-cell--right {
+  text-align: right;
+}
+
+.admin-product-management-page__table-body {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-product-management-page__table-row {
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+}
+
+.admin-product-management-page__table-row:hover {
+  background-color: rgba(249, 250, 251, 0.8);
+}
+
+.admin-product-management-page__table-cell {
+  padding: 16px 24px;
+  vertical-align: middle;
+}
+
+.admin-product-management-page__image-cell {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.admin-product-management-page__image-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-product-management-page__image-placeholder {
+  font-size: 22px;
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__name-cell-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-product-management-page__name-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.admin-product-management-page__slug-code {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+  font-family: ui-monospace, monospace;
+}
+
+.admin-product-management-page__meta-text-muted {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__price-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--secondary);
+}
+
+.admin-product-management-page__price-pill svg {
+  font-size: 16px;
+  color: var(--primary);
+}
+
+.admin-product-management-page__stock-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--overlay-primary);
+  color: var(--primary-dark);
+}
+
+.admin-product-management-page__stock-pill--warning {
+  background: rgba(255, 193, 7, 0.12);
+  color: var(--warning);
+}
+
+.admin-product-management-page__stock-pill--danger {
+  background: rgba(244, 67, 54, 0.12);
+  color: var(--error);
+}
+
+.admin-product-management-page__ai-badge-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.admin-product-management-page__ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-full);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(156, 39, 176, 0.08);
+  color: #7b1fa2;
+  border: 1px solid rgba(156, 39, 176, 0.2);
+}
+
+.admin-product-management-page__ai-badge-icon {
+  font-size: 12px;
+}
+
+.admin-product-management-page__ai-sub-text {
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__ai-seo-only-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-full);
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(33, 150, 243, 0.08);
+  color: var(--info);
+  border: 1px solid rgba(33, 150, 243, 0.25);
+}
+
+.admin-product-management-page__ai-enable-button {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-product-management-page__ai-enable-button:hover {
+  background: var(--background-secondary);
+  color: var(--primary);
+}
+
+.admin-product-management-page__status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-full);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.admin-product-management-page__status-pill--active {
+  background: var(--overlay-primary);
+  color: var(--primary-dark);
+}
+
+.admin-product-management-page__status-pill--draft {
+  background: rgba(255, 193, 7, 0.08);
+  color: var(--warning);
+}
+
+.admin-product-management-page__status-pill--hidden {
+  background: rgba(158, 158, 158, 0.12);
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__status-pill svg {
+  font-size: 16px;
+}
+
+.admin-product-management-page__action-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-product-management-page__icon-button {
+  border: none;
+  background: transparent;
+  padding: 8px;
+  border-radius: var(--border-radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-product-management-page__icon-button:hover {
+  background: var(--overlay-primary);
+  color: var(--primary);
+}
+
+.admin-product-management-page__icon-button svg {
+  font-size: 20px;
+}
+
+.admin-product-management-page__empty-row {
+  padding: 32px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__pagination {
+  padding: 16px 24px;
+  background: rgba(249, 250, 251, 0.7);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-product-management-page__pagination-text {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__pagination-text strong {
+  color: var(--secondary);
+}
+
+.admin-product-management-page__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-product-management-page__pagination-button {
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--border-radius-md);
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.admin-product-management-page__pagination-button:hover {
+  color: var(--primary);
+}
+
+.admin-product-management-page__pagination-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.admin-product-management-page__pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-product-management-page__page-pill {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius-md);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-tertiary);
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-product-management-page__page-pill--active {
+  background: var(--primary);
+  color: var(--text-light);
+  box-shadow: var(--shadow-primary);
+}
+
+.admin-product-management-page__page-pill:not(.admin-product-management-page__page-pill--active):hover {
+  background: var(--background-secondary);
+  color: var(--secondary);
+}
+
+.admin-product-management-page__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.admin-product-management-page__stat-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-product-management-page__stat-card--purple {
+  background: linear-gradient(to bottom right, #ffffff, rgba(156, 39, 176, 0.06));
+}
+
+.admin-product-management-page__stat-card--green {
+  background: linear-gradient(to bottom right, #ffffff, rgba(29, 185, 84, 0.06));
+}
+
+.admin-product-management-page__stat-card--amber {
+  background: linear-gradient(to bottom right, #ffffff, rgba(255, 152, 0, 0.06));
+}
+
+.admin-product-management-page__stat-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-product-management-page__stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__stat-label--purple {
+  color: #7b1fa2;
+}
+
+.admin-product-management-page__stat-label--green {
+  color: var(--primary);
+}
+
+.admin-product-management-page__stat-label--amber {
+  color: var(--warning);
+}
+
+.admin-product-management-page__stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.admin-product-management-page__stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.admin-product-management-page__stat-icon--purple {
+  background: rgba(156, 39, 176, 0.12);
+  color: #7b1fa2;
+}
+
+.admin-product-management-page__stat-icon--green {
+  background: var(--overlay-primary);
+  color: var(--primary);
+}
+
+.admin-product-management-page__stat-icon--amber {
+  background: rgba(255, 152, 0, 0.12);
+  color: var(--warning);
+}
+
+.admin-product-management-page__stat-progress {
+  width: 100%;
+  height: 6px;
+  border-radius: var(--border-radius-full);
+  background: rgba(156, 39, 176, 0.15);
+  overflow: hidden;
+}
+
+.admin-product-management-page__stat-progress-bar {
+  height: 100%;
+  border-radius: var(--border-radius-full);
+  background: #7b1fa2;
+  transition: width 0.3s ease;
+}
+
+.admin-product-management-page__stat-note {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.admin-product-management-page__stat-note--purple {
+  color: #7b1fa2;
+}
+
+@media (max-width: 1024px) {
+  .admin-product-management-page__header {
+    padding-inline: 20px;
+  }
+
+  .admin-product-management-page__content {
+    padding-inline: 20px;
+  }
+
+  .admin-product-management-page__filter-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-product-management-page__filter-left {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-product-management-page__header {
+    padding-inline: 16px;
+    height: auto;
+    padding-block: 16px;
+    gap: 12px;
+  }
+
+  .admin-product-management-page__header-title {
+    font-size: 20px;
+  }
+
+  .admin-product-management-page__content {
+    padding-inline: 16px;
+  }
+
+  .admin-product-management-page__table-head-cell,
+  .admin-product-management-page__table-cell {
+    padding: 12px 16px;
+  }
+
+  .admin-product-management-page__stats {
+    grid-template-columns: 1fr;
+  }
+}
+

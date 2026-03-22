@@ -1,0 +1,190 @@
+.admin-user-create-form-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 40;
+}
+
+.admin-user-create-form-modal__panel {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-color);
+  padding: 20px 22px 18px;
+}
+
+.admin-user-create-form-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-user-create-form-modal__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-user-create-form-modal__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.admin-user-create-form-modal__subtitle {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.admin-user-create-form-modal__close-button {
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 999px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-user-create-form-modal__close-button:hover {
+  background: var(--background-secondary);
+  color: var(--secondary);
+}
+
+.admin-user-create-form-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.admin-user-create-form-modal__field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-user-create-form-modal__field-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.admin-user-create-form-modal__field-description {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.admin-user-create-form-modal__input,
+.admin-user-create-form-modal__select {
+  width: 100%;
+  padding: 8px 11px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-user-create-form-modal__input:focus,
+.admin-user-create-form-modal__select:focus {
+  background: #ffffff;
+  border-color: var(--border-primary);
+  box-shadow: 0 0 0 1px rgba(29, 185, 84, 0.32);
+}
+
+.admin-user-create-form-modal__input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.admin-user-create-form-modal__error-text {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--error);
+}
+
+.admin-user-create-form-modal__footer {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-user-create-form-modal__secondary-button {
+  padding: 8px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-user-create-form-modal__secondary-button:hover {
+  background: var(--background-secondary);
+  border-color: var(--border-primary);
+  color: var(--secondary);
+}
+
+.admin-user-create-form-modal__primary-button {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  background: var(--gradient-primary);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow-primary);
+  transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-user-create-form-modal__primary-button:hover {
+  opacity: 0.96;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(29, 185, 84, 0.45);
+}
+
+.admin-user-create-form-modal__primary-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.admin-user-create-form-modal__primary-button-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: #ffffff;
+  animation: admin-user-create-form-modal__spin 0.7s linear infinite;
+}
+
+@keyframes admin-user-create-form-modal__spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-user-create-form-modal__panel {
+    margin-inline: 12px;
+    padding-inline: 16px;
+  }
+}
+

@@ -1,0 +1,369 @@
+.admin-settings__main {
+    flex: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    min-height: 100vh;
+}
+
+.admin-settings__header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: var(--background);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-settings__header-title-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-settings__header-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin: 0;
+}
+
+.admin-settings__header-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    margin: 0;
+}
+
+.admin-settings__header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-settings__save-btn,
+.admin-settings__save-btn-bottom {
+    background: var(--gradient-primary);
+    color: #FFF;
+    /* text-secondary-dark */
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 700;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-primary);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.admin-settings__save-btn-bottom {
+    padding: 0.625rem 2.5rem;
+}
+
+.admin-settings__save-btn:hover:not(:disabled),
+.admin-settings__save-btn-bottom:hover:not(:disabled) {
+    transform: scale(1.02);
+    background: var(--gradient-primary-hover);
+}
+
+.admin-settings__save-btn:active:not(:disabled),
+.admin-settings__save-btn-bottom:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.admin-settings__save-btn:disabled,
+.admin-settings__save-btn-bottom:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Tabs */
+.admin-settings__tabs {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0 2rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--background);
+}
+
+.admin-settings__tab {
+    padding: 1rem 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-settings__tab:hover {
+    color: var(--text);
+}
+
+.admin-settings__tab--active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.admin-settings__content {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.admin-settings__section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-settings__section-icon {
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+.admin-settings__section-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    margin: 0;
+}
+
+.admin-settings__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .admin-settings__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.admin-settings__card {
+    background-color: var(--background);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+html[data-theme='dark'] .admin-settings__card {
+    background-color: var(--secondary-dark);
+}
+
+.admin-settings__card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.admin-settings__card--full {
+    grid-column: 1 / -1;
+}
+
+/* Payment Section Grid */
+.admin-settings__payment-card {
+    background-color: var(--background);
+    padding: 2rem;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+html[data-theme='dark'] .admin-settings__payment-card {
+    background-color: var(--secondary-dark);
+}
+
+.admin-settings__payment-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .admin-settings__payment-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.admin-settings__payment-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Base Form Inputs */
+.admin-settings__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.admin-settings__input,
+.admin-settings__select,
+.admin-settings__textarea {
+    width: 100%;
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: 0.625rem 1rem;
+    font-size: 1rem;
+    color: var(--text);
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+html[data-theme='dark'] .admin-settings__input,
+html[data-theme='dark'] .admin-settings__select,
+html[data-theme='dark'] .admin-settings__textarea {
+    background-color: var(--secondary-light);
+    border-color: var(--secondary-lighter);
+}
+
+.admin-settings__input:focus,
+.admin-settings__select:focus,
+.admin-settings__textarea:focus {
+    outline: none;
+    border-color: transparent;
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+.admin-settings__textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.admin-settings__input-help {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+/* QR Preview Area */
+.admin-settings__qr-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background-color: var(--background-secondary);
+    border-radius: var(--border-radius-xl);
+    border: 2px dashed var(--border-color);
+}
+
+html[data-theme='dark'] .admin-settings__qr-preview {
+    background-color: var(--secondary-light);
+    border-color: var(--secondary-lighter);
+}
+
+.admin-settings__qr-preview-title {
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.admin-settings__qr-image-wrapper {
+    width: 100%;
+    max-width: 18rem;
+    aspect-ratio: 1;
+    background-color: #fff;
+    padding: 0.5rem;
+    border-radius: var(--border-radius-md);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.admin-settings__qr-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.admin-settings__empty-qr {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    font-size: 2rem;
+    background-color: #f0f0f0;
+    border-radius: var(--border-radius-sm);
+}
+
+/* FooterActions */
+.admin-settings__footer {
+    padding-top: 2.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.admin-settings__discard-btn {
+    padding: 0.625rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.admin-settings__discard-btn:hover {
+    color: var(--text);
+}
+
+/* Loading Overlay for settings init */
+.admin-settings__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    gap: 1rem;
+    color: var(--text-secondary);
+}
+
+.admin-settings__spinner {
+    animation: spin 1s linear infinite;
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

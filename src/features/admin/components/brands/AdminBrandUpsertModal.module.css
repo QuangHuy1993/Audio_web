@@ -1,0 +1,241 @@
+/* BEM block: admin-brand-upsert-modal */
+.admin-brand-upsert-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 40;
+}
+
+.admin-brand-upsert-modal__panel {
+  width: 100%;
+  max-width: 720px;
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-color);
+  padding: 20px 22px 18px;
+}
+
+.admin-brand-upsert-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.admin-brand-upsert-modal__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-brand-upsert-modal__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.admin-brand-upsert-modal__subtitle {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.admin-brand-upsert-modal__close-button {
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 999px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-brand-upsert-modal__close-button:hover {
+  background: var(--background-secondary);
+  color: var(--secondary);
+}
+
+.admin-brand-upsert-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-brand-upsert-modal__field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-brand-upsert-modal__ai-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-brand-upsert-modal__field-label-inline {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.admin-brand-upsert-modal__ai-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px 16px;
+  margin-top: 6px;
+}
+
+.admin-brand-upsert-modal__field-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.admin-brand-upsert-modal__field-description {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.admin-brand-upsert-modal__ai-generate-button {
+  align-self: flex-start;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-primary);
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary-dark);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-brand-upsert-modal__ai-generate-button:hover:not(:disabled) {
+  background: var(--overlay-primary);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-brand-upsert-modal__ai-generate-button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.admin-brand-upsert-modal__input,
+.admin-brand-upsert-modal__textarea {
+  width: 100%;
+  padding: 8px 11px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-brand-upsert-modal__textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+
+.admin-brand-upsert-modal__input:focus,
+.admin-brand-upsert-modal__textarea:focus {
+  background: #ffffff;
+  border-color: var(--border-primary);
+  box-shadow: 0 0 0 1px rgba(29, 185, 84, 0.32);
+}
+
+.admin-brand-upsert-modal__input::placeholder,
+.admin-brand-upsert-modal__textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.admin-brand-upsert-modal__error-text {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--error);
+}
+
+.admin-brand-upsert-modal__footer {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-brand-upsert-modal__secondary-button {
+  padding: 8px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-brand-upsert-modal__secondary-button:hover {
+  background: var(--background-secondary);
+  border-color: var(--border-primary);
+  color: var(--secondary);
+}
+
+.admin-brand-upsert-modal__primary-button {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  background: var(--gradient-primary);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow-primary);
+  transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-brand-upsert-modal__primary-button:hover {
+  opacity: 0.96;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(29, 185, 84, 0.45);
+}
+
+.admin-brand-upsert-modal__primary-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.admin-brand-upsert-modal__primary-button-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: #ffffff;
+  animation: admin-brand-upsert-modal__spin 0.7s linear infinite;
+}
+
+@keyframes admin-brand-upsert-modal__spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-brand-upsert-modal__panel {
+    margin-inline: 12px;
+    padding-inline: 16px;
+  }
+}

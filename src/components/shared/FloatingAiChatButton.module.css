@@ -1,0 +1,89 @@
+/* ============================================================
+   FloatingAiChatButton – Nút tư vấn AI nổi (BEM)
+   Block: floating-ai-chat-button
+   ============================================================ */
+
+.floating-ai-chat-button {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px 12px 14px;
+  background: var(--secondary);
+  border: 1px solid rgba(29, 185, 84, 0.4);
+  border-radius: var(--border-radius-full);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(29, 185, 84, 0.1);
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: fixed;
+}
+
+.floating-ai-chat-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(29, 185, 84, 0.3);
+  border-color: var(--primary);
+}
+
+.floating-ai-chat-button:active {
+  transform: translateY(0);
+}
+
+/* Icon wrapper with green glow */
+.floating-ai-chat-button__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #000;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.floating-ai-chat-button__icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.floating-ai-chat-button__label {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* Online pulse dot */
+.floating-ai-chat-button__pulse {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: floating-ai-pulse 2s infinite ease-in-out;
+}
+
+@keyframes floating-ai-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* Responsive: thu nhỏ trên mobile */
+@media (max-width: 640px) {
+  .floating-ai-chat-button {
+    bottom: 20px;
+    right: 16px;
+    padding: 11px 16px 11px 12px;
+  }
+
+  .floating-ai-chat-button__label {
+    font-size: 12px;
+  }
+}

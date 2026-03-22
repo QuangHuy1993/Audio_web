@@ -1,0 +1,272 @@
+ .auth-access-denied-page-page {
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   padding: 3rem 1.5rem;
+   background-color: var(--background-950, #191414);
+   color: var(--text-primary, #ffffff);
+   font-family: var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+   position: relative;
+   overflow: hidden;
+ }
+
+ .auth-access-denied-page-page__header {
+   position: absolute;
+   top: 2.75rem;
+   left: 0;
+   right: 0;
+   display: flex;
+   justify-content: center;
+   pointer-events: none;
+ }
+
+ .auth-access-denied-page-page__header-inner {
+   display: inline-flex;
+   align-items: center;
+   gap: 0.75rem;
+   pointer-events: auto;
+ }
+
+ .auth-access-denied-page-page__logo {
+   width: 2.5rem;
+   height: 2.5rem;
+   border-radius: 9999px;
+   background: var(--primary, #1db954);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0 0 15px rgba(29, 185, 84, 0.5);
+   color: #ffffff;
+   font-size: 1.4rem;
+   font-weight: 700;
+ }
+
+ .auth-access-denied-page-page__brand {
+   font-size: 1.25rem;
+   font-weight: 700;
+   letter-spacing: 0.16em;
+   text-transform: uppercase;
+ }
+
+ .auth-access-denied-page-page__main {
+   width: 100%;
+   max-width: 40rem;
+   text-align: center;
+   position: relative;
+   z-index: 1;
+ }
+
+ .auth-access-denied-page-page__code-wrapper {
+   position: relative;
+   margin-bottom: 2rem;
+   display: flex;
+   justify-content: center;
+ }
+
+ .auth-access-denied-page-page__code {
+   font-size: clamp(7rem, 22vw, 12rem);
+   font-weight: 800;
+   line-height: 0.8;
+   letter-spacing: -0.06em;
+  opacity: 0.1;
+   user-select: none;
+  text-shadow:
+    0 0 10px rgba(0, 0, 0, 0.65),
+    0 0 38px rgba(29, 185, 84, 0.55);
+  animation: auth-access-denied-page-code-glow 3.4s ease-in-out infinite;
+ }
+
+ .auth-access-denied-page-page__wave-container {
+   position: absolute;
+   inset: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   overflow: visible;
+ }
+
+.auth-access-denied-page-page__code-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -15% -12%;
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 215, 0, 0.22) 0,
+      rgba(255, 215, 0, 0.06) 25%,
+      transparent 55%
+    );
+  opacity: 0.0;
+  filter: blur(6px);
+  transform: translateY(26px) scale(1.02);
+  pointer-events: none;
+  animation: auth-access-denied-page-spotlight 3.4s ease-in-out infinite;
+  mix-blend-mode: screen;
+  z-index: -1;
+}
+
+ .auth-access-denied-page-page__wave-svg {
+   width: 100%;
+   max-width: 26rem;
+   height: auto;
+ }
+
+ .auth-access-denied-page-page__wave-path--muted {
+   opacity: 0.3;
+   filter: blur(1px);
+ }
+
+ .auth-access-denied-page-page__wave-icon {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   font-size: clamp(3rem, 9vw, 4.5rem);
+   color: rgba(255, 255, 255, 0.16);
+ }
+
+ .auth-access-denied-page-page__title {
+   font-size: clamp(1.875rem, 4vw, 2.5rem);
+   font-weight: 700;
+   letter-spacing: -0.04em;
+   margin-bottom: 0.75rem;
+ }
+
+ .auth-access-denied-page-page__description {
+   max-width: 26rem;
+   margin: 0 auto;
+   font-size: 1.05rem;
+   line-height: 1.7;
+   color: var(--text-muted, #9ca3af);
+ }
+
+ .auth-access-denied-page-page__actions {
+   margin-top: 3rem;
+ }
+
+ .auth-access-denied-page-page__back-link {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 0.5rem;
+   padding: 1rem 2.75rem;
+   border-radius: 9999px;
+   border: none;
+   cursor: pointer;
+   font-weight: 700;
+   font-size: 0.95rem;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+   text-decoration: none;
+   color: #ffffff;
+   background-image: linear-gradient(90deg, #1db954 0%, #1ed760 100%);
+   box-shadow: 0 4px 20px rgba(29, 185, 84, 0.3);
+   transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+ }
+
+ .auth-access-denied-page-page__back-link:hover {
+   opacity: 0.92;
+   transform: translateY(-2px);
+   box-shadow: 0 8px 28px rgba(29, 185, 84, 0.35);
+ }
+
+ .auth-access-denied-page-page__back-icon {
+   font-size: 1.25rem;
+ }
+
+ .auth-access-denied-page-page__ambient {
+   position: fixed;
+   inset: 0;
+   pointer-events: none;
+   z-index: 0;
+ }
+
+ .auth-access-denied-page-page__ambient-primary {
+   position: absolute;
+   top: -12%;
+   right: -12%;
+   width: 50%;
+   height: 50%;
+   background: rgba(29, 185, 84, 0.06);
+   border-radius: 9999px;
+   filter: blur(120px);
+ }
+
+ .auth-access-denied-page-page__ambient-secondary {
+   position: absolute;
+   bottom: -12%;
+   left: -12%;
+   width: 40%;
+   height: 40%;
+   background: rgba(255, 215, 0, 0.06);
+   border-radius: 9999px;
+   filter: blur(100px);
+ }
+
+ .auth-access-denied-page-page__footer {
+   position: absolute;
+   bottom: 2rem;
+   left: 50%;
+   transform: translateX(-50%);
+   font-size: 0.75rem;
+   letter-spacing: 0.18em;
+   text-transform: uppercase;
+   color: var(--text-muted-soft, #4b5563);
+   font-weight: 500;
+ }
+
+@keyframes auth-access-denied-page-code-glow {
+  0%,
+  100% {
+    opacity: 0.1;
+    text-shadow:
+      0 0 10px rgba(0, 0, 0, 0.65),
+      0 0 26px rgba(29, 185, 84, 0.4);
+  }
+  40% {
+    opacity: 0.22;
+    text-shadow:
+      0 0 14px rgba(0, 0, 0, 0.8),
+      0 0 42px rgba(29, 185, 84, 0.8),
+      0 0 70px rgba(255, 215, 0, 0.6);
+  }
+  60% {
+    opacity: 0.16;
+    text-shadow:
+      0 0 12px rgba(0, 0, 0, 0.7),
+      0 0 34px rgba(29, 185, 84, 0.65);
+  }
+}
+
+@keyframes auth-access-denied-page-spotlight {
+  0%,
+  100% {
+    opacity: 0.0;
+    transform: translateY(30px) scale(1.02);
+  }
+  35% {
+    opacity: 0.7;
+    transform: translateY(8px) scale(1.08);
+  }
+  55% {
+    opacity: 0.45;
+    transform: translateY(0) scale(1.04);
+  }
+}
+
+ @media (min-width: 768px) {
+   .auth-access-denied-page-page {
+     padding-inline: 2.5rem;
+   }
+
+   .auth-access-denied-page-page__header {
+     top: 3.5rem;
+   }
+
+   .auth-access-denied-page-page__footer {
+     bottom: 2.5rem;
+   }
+ }
+

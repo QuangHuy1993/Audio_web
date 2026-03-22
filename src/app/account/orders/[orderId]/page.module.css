@@ -1,0 +1,170 @@
+ .account-order-detail-page {
+   padding: 24px;
+   color: var(--text-primary);
+ }
+
+ .account-order-detail-page__back-button {
+   margin-bottom: 16px;
+   background: transparent;
+   border: none;
+   color: var(--primary);
+   cursor: pointer;
+   display: inline-flex;
+   align-items: center;
+   gap: 4px;
+   font-size: 14px;
+ }
+
+ .account-order-detail-page__heading {
+   font-size: 20px;
+   font-weight: 700;
+   margin-bottom: 8px;
+ }
+
+ .account-order-detail-page__meta {
+   margin-bottom: 24px;
+   font-size: 14px;
+   display: grid;
+   gap: 4px;
+ }
+
+ .account-order-detail-page__meta-label {
+   font-weight: 500;
+ }
+
+ .account-order-detail-page__section-title {
+   font-size: 16px;
+   font-weight: 600;
+   margin: 24px 0 8px;
+ }
+
+ .account-order-detail-page__items-table {
+   width: 100%;
+   border-collapse: collapse;
+   margin-bottom: 24px;
+ }
+
+ .account-order-detail-page__items-header-cell {
+   text-align: left;
+   padding: 8px;
+   font-size: 13px;
+   color: var(--text-secondary);
+   border-bottom: 1px solid var(--border-subtle);
+ }
+
+ .account-order-detail-page__items-header-cell--right {
+   text-align: right;
+ }
+
+ .account-order-detail-page__items-row {
+   border-bottom: 1px solid var(--border-subtle);
+ }
+
+ .account-order-detail-page__items-cell {
+   padding: 10px 8px;
+   font-size: 14px;
+ }
+
+ .account-order-detail-page__items-cell--right {
+   text-align: right;
+ }
+
+ .account-order-detail-page__product-cell {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+ }
+
+ .account-order-detail-page__product-image-wrapper {
+   position: relative;
+   width: 48px;
+   height: 48px;
+   border-radius: 8px;
+   overflow: hidden;
+   background: var(--background-subtle);
+   flex-shrink: 0;
+ }
+
+ .account-order-detail-page__product-image-fallback {
+   width: 100%;
+   height: 100%;
+   background: var(--background-subtle);
+ }
+
+ .account-order-detail-page__product-name {
+   font-weight: 500;
+ }
+
+ .account-order-detail-page__shipping-block {
+   margin-bottom: 24px;
+   font-size: 14px;
+   line-height: 1.5;
+ }
+
+ .account-order-detail-page__summary {
+   font-size: 14px;
+   display: grid;
+   gap: 4px;
+   max-width: 320px;
+ }
+
+ .account-order-detail-page__summary-row {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+ }
+
+ .account-order-detail-page__summary-label {
+   color: var(--text-secondary);
+ }
+
+ .account-order-detail-page__summary-value--total {
+   font-weight: 700;
+   font-size: 16px;
+ }
+
+ .account-order-detail-page__status-pill {
+   display: inline-flex;
+   align-items: center;
+   padding: 4px 10px;
+   border-radius: 999px;
+   font-size: 12px;
+   background: var(--background-subtle);
+ }
+
+ .account-order-detail-page__status-pill--paid {
+   background: rgba(16, 185, 129, 0.12);
+   color: #0f766e;
+ }
+
+ .account-order-detail-page__status-pill--unpaid {
+   background: rgba(248, 113, 113, 0.12);
+   color: #b91c1c;
+ }
+
+ .account-order-detail-page__status-pill--cancelled {
+   background: rgba(148, 163, 184, 0.16);
+   color: #475569;
+ }
+
+ .account-order-detail-page__actions {
+   margin-top: 24px;
+   display: flex;
+   flex-wrap: wrap;
+   gap: 12px;
+ }
+
+ .account-order-detail-page__cancel-button {
+   padding: 8px 16px;
+   border-radius: 999px;
+   border: 1px solid var(--border-subtle);
+   background: var(--background-elevated);
+   cursor: pointer;
+   font-size: 14px;
+ }
+
+ .account-order-detail-page__cancel-button--danger {
+   border-color: #fecaca;
+   color: #b91c1c;
+ }
+

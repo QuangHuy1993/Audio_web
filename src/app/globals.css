@@ -1,13 +1,77 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* Bảng màu chủ đạo cho Audio AI Shop */
+  /* Màu cơ bản */
+  --primary: #1DB954;
+  --primary-light: #1ED760;
+  --primary-lighter: #4BE47E;
+  --primary-dark: #169C46;
+  --primary-darker: #117A37;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --secondary: #191414;
+  --secondary-light: #2A2424;
+  --secondary-lighter: #3D3535;
+  --secondary-dark: #0D0A0A;
+
+  --accent: #FFD700;
+  --accent-light: #FFE54C;
+  --accent-lighter: #FFF176;
+  --accent-dark: #D4AF37;
+  --accent-darker: #B8922A;
+
+  --background: #FAFAFA;
+  --background-secondary: #F5F5F5;
+  --background-tertiary: #EEEEEE;
+  --background-dark: #E0E0E0;
+
+  --text: #121212;
+  --text-secondary: #424242;
+  --text-tertiary: #757575;
+  --text-light: #FFFFFF;
+
+  /* Màu hỗ trợ */
+  --success: #4CAF50;
+  --success-light: #81C784;
+  --warning: #FF9800;
+  --warning-light: #FFB74D;
+  --error: #F44336;
+  --error-light: #E57373;
+  --info: #2196F3;
+  --info-light: #64B5F6;
+
+  /* Shadow và overlay */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.2);
+  --shadow-primary: 0 4px 14px rgba(29, 185, 84, 0.4);
+  --shadow-accent: 0 4px 14px rgba(255, 215, 0, 0.4);
+  --shadow-secondary: 0 4px 14px rgba(25, 20, 20, 0.6);
+
+  --overlay-light: rgba(255, 255, 255, 0.9);
+  --overlay-dark: rgba(18, 18, 18, 0.85);
+  --overlay-primary: rgba(29, 185, 84, 0.1);
+  --overlay-accent: rgba(255, 215, 0, 0.1);
+
+  /* Gradient */
+  --gradient-primary: linear-gradient(135deg, #1DB954 0%, #169C46 100%);
+  --gradient-primary-hover: linear-gradient(135deg, #1ED760 0%, #1DB954 100%);
+  --gradient-secondary: linear-gradient(135deg, #2A2424 0%, #191414 100%);
+  --gradient-accent: linear-gradient(135deg, #FFE54C 0%, #FFD700 100%);
+  --gradient-hero: linear-gradient(135deg, #191414 0%, #2A2424 50%, #1DB954 100%);
+  --gradient-premium: linear-gradient(135deg, #FFD700 0%, #FFF176 50%, #FFD700 100%);
+
+  /* Border */
+  --border-color: #E0E0E0;
+  --border-color-dark: #BDBDBD;
+  --border-primary: #1DB954;
+  --border-accent: #FFD700;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-full: 9999px;
+
+  --background-homepage: rgb(18 32 23 / var(--tw-bg-opacity, 1));
 }
 
 html,
@@ -17,11 +81,15 @@ body {
 }
 
 body {
-  color: var(--foreground);
+  color: var(--text);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.app-homepage-bg {
+  --tw-bg-opacity: 1;
 }
 
 * {
@@ -30,13 +98,43 @@ body {
   margin: 0;
 }
 
+
 a {
   color: inherit;
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* --- Global Scrollbar Styling (Premium) --- */
+html {
+  scroll-behavior: smooth;
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(29, 185, 84, 0.2);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1DB954; /* var(--primary) */
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(29, 185, 84, 0.2) transparent;
+}
+

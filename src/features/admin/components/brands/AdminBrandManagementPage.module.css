@@ -1,0 +1,713 @@
+/* BEM block: admin-brand-management-page */
+.admin-brand-management-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.admin-brand-management-page__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 80px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+.admin-brand-management-page__header-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-brand-management-page__header-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.admin-brand-management-page__header-subtitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.admin-brand-management-page__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-brand-management-page__primary-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: var(--text-light);
+  border-radius: var(--border-radius-lg);
+  border: none;
+  cursor: pointer;
+  background: var(--gradient-primary);
+  color: var(--text-light);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: var(--shadow-primary);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.admin-brand-management-page__primary-button:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(29, 185, 84, 0.3);
+}
+
+.admin-brand-management-page__primary-button-icon {
+  font-size: 20px;
+}
+
+.admin-brand-management-page__notification-button {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 8px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-brand-management-page__notification-button:hover {
+  background: var(--overlay-primary);
+  color: var(--primary);
+}
+
+.admin-brand-management-page__notification-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--error);
+  border: 2px solid #ffffff;
+}
+
+.admin-brand-management-page__content {
+  padding: 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-brand-management-page__filter-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-brand-management-page__filter-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1 1 400px;
+}
+
+.admin-brand-management-page__search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.admin-brand-management-page__search-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--text-tertiary);
+}
+
+.admin-brand-management-page__search-input {
+  width: 100%;
+  padding: 8px 12px 8px 38px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.admin-brand-management-page__search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.admin-brand-management-page__search-input:focus {
+  background: #ffffff;
+  border-color: var(--border-primary);
+  box-shadow: 0 0 0 1px rgba(29, 185, 84, 0.35);
+}
+
+.admin-brand-management-page__select {
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  outline: none;
+  min-width: 180px;
+}
+
+.admin-brand-management-page__select:focus {
+  border-color: var(--border-primary);
+}
+
+.admin-brand-management-page__filter-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-brand-management-page__filter-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-brand-management-page__filter-button:hover {
+  background: var(--background-secondary);
+  border-color: var(--border-primary);
+  color: var(--primary);
+}
+
+.admin-brand-management-page__table-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.admin-brand-management-page__table-wrapper {
+  width: 100%;
+  position: relative;
+  overflow-x: auto;
+}
+
+.admin-brand-management-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.admin-brand-management-page__table-head-row {
+  background: rgba(249, 250, 251, 0.7);
+}
+
+.admin-brand-management-page__table-head-cell {
+  padding: 16px 24px;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.admin-brand-management-page__table-head-cell--center {
+  text-align: center;
+}
+
+.admin-brand-management-page__table-head-cell--right {
+  text-align: right;
+}
+
+.admin-brand-management-page__table-body {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-brand-management-page__table-row {
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+}
+
+.admin-brand-management-page__table-row:hover {
+  background-color: rgba(249, 250, 251, 0.8);
+}
+
+.admin-brand-management-page__table-cell {
+  padding: 16px 24px;
+  vertical-align: middle;
+}
+
+.admin-brand-management-page__logo-cell {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.admin-brand-management-page__logo-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.admin-brand-management-page__logo-placeholder {
+  font-size: 22px;
+  color: var(--text-tertiary);
+}
+
+.admin-brand-management-page__name-cell-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-brand-management-page__name-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.admin-brand-management-page__seo-status {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-brand-management-page__seo-status--success {
+  color: var(--success);
+}
+
+.admin-brand-management-page__seo-status--warning {
+  color: var(--warning);
+}
+
+.admin-brand-management-page__slug-code {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+  font-family: ui-monospace, monospace;
+}
+
+.admin-brand-management-page__segment-badge {
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: rgba(255, 152, 0, 0.08);
+  color: var(--warning);
+}
+
+.admin-brand-management-page__segment-badge--info {
+  border-color: rgba(33, 150, 243, 0.3);
+  background: rgba(33, 150, 243, 0.08);
+  color: var(--info);
+}
+
+.admin-brand-management-page__ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-full);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(156, 39, 176, 0.08);
+  color: #7b1fa2;
+  border: 1px solid rgba(156, 39, 176, 0.2);
+}
+
+.admin-brand-management-page__ai-badge-icon {
+  font-size: 12px;
+}
+
+.admin-brand-management-page__ai-sub {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+.admin-brand-management-page__ai-enable-button {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-brand-management-page__ai-enable-button:hover {
+  background: var(--background-secondary);
+  color: var(--primary);
+}
+
+.admin-brand-management-page__product-count-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--overlay-primary);
+  color: var(--primary-dark);
+}
+
+.admin-brand-management-page__product-count-pill--muted {
+  background: var(--background-secondary);
+  color: var(--text-tertiary);
+}
+
+.admin-brand-management-page__action-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-brand-management-page__view-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.admin-brand-management-page__view-button:hover {
+  background: var(--overlay-primary);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.admin-brand-management-page__icon-button {
+  border: none;
+  background: transparent;
+  padding: 8px;
+  border-radius: var(--border-radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-brand-management-page__icon-button:hover {
+  background: var(--overlay-primary);
+  color: var(--primary);
+}
+
+.admin-brand-management-page__icon-button svg {
+  font-size: 20px;
+}
+
+.admin-brand-management-page__empty-row {
+  padding: 32px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.admin-brand-management-page__pagination {
+  padding: 16px 24px;
+  background: rgba(249, 250, 251, 0.7);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-brand-management-page__pagination-text {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.admin-brand-management-page__pagination-text strong {
+  color: var(--secondary);
+}
+
+.admin-brand-management-page__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-brand-management-page__pagination-button {
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--border-radius-md);
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.admin-brand-management-page__pagination-button:hover {
+  color: var(--primary);
+}
+
+.admin-brand-management-page__pagination-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.admin-brand-management-page__pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-brand-management-page__page-pill {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius-md);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-tertiary);
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-brand-management-page__page-pill--active {
+  background: var(--primary);
+  color: var(--text-light);
+  box-shadow: var(--shadow-primary);
+}
+
+.admin-brand-management-page__page-pill:not(.admin-brand-management-page__page-pill--active):hover {
+  background: var(--background-secondary);
+  color: var(--secondary);
+}
+
+.admin-brand-management-page__page-ellipsis {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  padding-inline: 4px;
+}
+
+/* Stats cards */
+.admin-brand-management-page__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.admin-brand-management-page__stat-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-brand-management-page__stat-card--purple {
+  background: linear-gradient(to bottom right, #ffffff, rgba(156, 39, 176, 0.06));
+}
+
+.admin-brand-management-page__stat-card--green {
+  background: linear-gradient(to bottom right, #ffffff, rgba(29, 185, 84, 0.06));
+}
+
+.admin-brand-management-page__stat-card--amber {
+  background: linear-gradient(to bottom right, #ffffff, rgba(255, 152, 0, 0.06));
+}
+
+.admin-brand-management-page__stat-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-brand-management-page__stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+}
+
+.admin-brand-management-page__stat-label--purple {
+  color: #7b1fa2;
+}
+
+.admin-brand-management-page__stat-label--green {
+  color: var(--primary);
+}
+
+.admin-brand-management-page__stat-label--amber {
+  color: var(--warning);
+}
+
+.admin-brand-management-page__stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.admin-brand-management-page__stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.admin-brand-management-page__stat-icon--purple {
+  background: rgba(156, 39, 176, 0.12);
+  color: #7b1fa2;
+}
+
+.admin-brand-management-page__stat-icon--green {
+  background: var(--overlay-primary);
+  color: var(--primary);
+}
+
+.admin-brand-management-page__stat-icon--amber {
+  background: rgba(255, 152, 0, 0.12);
+  color: var(--warning);
+}
+
+.admin-brand-management-page__stat-progress {
+  width: 100%;
+  height: 6px;
+  border-radius: var(--border-radius-full);
+  background: rgba(156, 39, 176, 0.15);
+  overflow: hidden;
+}
+
+.admin-brand-management-page__stat-progress-bar {
+  height: 100%;
+  border-radius: var(--border-radius-full);
+  background: #7b1fa2;
+  transition: width 0.3s ease;
+}
+
+.admin-brand-management-page__stat-note {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.admin-brand-management-page__stat-note--purple {
+  color: #7b1fa2;
+}
+
+@media (max-width: 1024px) {
+  .admin-brand-management-page__header {
+    padding-inline: 20px;
+  }
+
+  .admin-brand-management-page__content {
+    padding-inline: 20px;
+  }
+
+  .admin-brand-management-page__filter-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-brand-management-page__filter-left {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-brand-management-page__header {
+    padding-inline: 16px;
+    height: auto;
+    padding-block: 16px;
+    gap: 12px;
+  }
+
+  .admin-brand-management-page__header-title {
+    font-size: 20px;
+  }
+
+  .admin-brand-management-page__content {
+    padding-inline: 16px;
+  }
+
+  .admin-brand-management-page__table-head-cell,
+  .admin-brand-management-page__table-cell {
+    padding: 12px 16px;
+  }
+
+  .admin-brand-management-page__stats {
+    grid-template-columns: 1fr;
+  }
+}

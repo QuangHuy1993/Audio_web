@@ -1,0 +1,27 @@
+ .admin-reviews-page {
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+ }
+
+ .admin-reviews-page__header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+ }
+
+ .admin-reviews-page__title {
+   font-size: 20px;
+   font-weight: 700;
+ }
+
+ .admin-reviews-page__filters {
+   display: flex;
+   gap: 12px;
+   flex-wrap: wrap;
+ }
+
+ .admin-reviews-page__table-wrapper {
+   position: relative;
+ }
+

@@ -1,0 +1,369 @@
+/* ============================================================
+   /tu-van-ai – Trang tư vấn AI toàn trang (BEM)
+   Block: tu-van-ai-page
+   ============================================================ */
+
+.tu-van-ai-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-homepage);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ---- Main layout ---- */
+.tu-van-ai-page__main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  height: calc(100vh - 64px); /* trừ chiều cao ShopHeader */
+}
+
+/* ---- Chat section (75% trên desktop) ---- */
+.tu-van-ai-page__chat-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ---- Chat header ---- */
+.tu-van-ai-page__chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(18, 32, 23, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.tu-van-ai-page__chat-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tu-van-ai-page__chat-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---- Agent avatar ---- */
+.tu-van-ai-page__agent-avatar-wrap {
+  position: relative;
+}
+
+.tu-van-ai-page__agent-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: 20px;
+}
+
+.tu-van-ai-page__agent-online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 11px;
+  height: 11px;
+  background: #22c55e;
+  border: 2px solid var(--background-homepage);
+  border-radius: 50%;
+}
+
+.tu-van-ai-page__agent-name {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.tu-van-ai-page__agent-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--primary);
+  margin: 0;
+}
+
+.tu-van-ai-page__agent-pulse {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
+  border-radius: 50%;
+  animation: tu-van-ai-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes tu-van-ai-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ---- Header buttons ---- */
+.tu-van-ai-page__browse-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--border-radius-full);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tu-van-ai-page__browse-btn:hover {
+  background: rgba(29, 185, 84, 0.12);
+  color: var(--primary);
+  border-color: rgba(29, 185, 84, 0.3);
+}
+
+.tu-van-ai-page__browse-btn svg {
+  font-size: 18px;
+}
+
+.tu-van-ai-page__sidebar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.tu-van-ai-page__sidebar-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---- Welcome banner ---- */
+.tu-van-ai-page__welcome {
+  text-align: center;
+  padding: 28px 24px 0;
+  flex-shrink: 0;
+}
+
+.tu-van-ai-page__welcome-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  background: rgba(29, 185, 84, 0.1);
+  border-radius: var(--border-radius-full);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.tu-van-ai-page__welcome-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 6px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.tu-van-ai-page__welcome-desc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 0 4px;
+}
+
+/* ---- Panel wrap: chứa AiChatPanel, chiếm toàn bộ chiều cao còn lại ---- */
+.tu-van-ai-page__panel-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px 8px;
+}
+
+/* ---- Expert badge (fixed overlay) ---- */
+.tu-van-ai-page__expert-badge {
+  position: absolute;
+  bottom: 88px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background: rgba(18, 32, 23, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(29, 185, 84, 0.35);
+  border-radius: var(--border-radius-full);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.tu-van-ai-page__expert-badge svg {
+  font-size: 16px;
+}
+
+/* ---- Sidebar ---- */
+.tu-van-ai-page__sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tu-van-ai-page__sidebar-inner {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tu-van-ai-page__sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tu-van-ai-page__sidebar-heading {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+.tu-van-ai-page__sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tu-van-ai-page__sidebar-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.4;
+}
+
+.tu-van-ai-page__sidebar-item svg {
+  font-size: 17px;
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.tu-van-ai-page__sidebar-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tu-van-ai-page__sidebar-pill {
+  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-full);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: default;
+}
+
+.tu-van-ai-page__support-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(29, 185, 84, 0.1);
+  border: 1px solid rgba(29, 185, 84, 0.25);
+  border-radius: var(--border-radius-lg);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.tu-van-ai-page__support-link:hover {
+  background: rgba(29, 185, 84, 0.18);
+}
+
+.tu-van-ai-page__support-link svg {
+  font-size: 18px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .tu-van-ai-page__sidebar {
+    display: none;
+  }
+
+  .tu-van-ai-page__sidebar--open {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 50;
+    background: var(--background-homepage);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .tu-van-ai-page__sidebar-toggle {
+    display: flex;
+  }
+}
+
+@media (max-width: 640px) {
+  .tu-van-ai-page__main {
+    height: calc(100dvh - 56px);
+  }
+
+  .tu-van-ai-page__chat-header {
+    padding: 10px 16px;
+  }
+
+  .tu-van-ai-page__welcome {
+    padding: 16px 16px 0;
+  }
+
+  .tu-van-ai-page__welcome-title {
+    font-size: 18px;
+  }
+
+  .tu-van-ai-page__expert-badge {
+    display: none;
+  }
+
+  .tu-van-ai-page__panel-wrap {
+    padding: 0 4px 4px;
+  }
+}

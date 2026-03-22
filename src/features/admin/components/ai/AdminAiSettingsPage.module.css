@@ -1,0 +1,256 @@
+.admin-ai-settings-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
+  padding: 32px 28px;
+  gap: 20px;
+}
+
+.admin-ai-settings-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-ai-settings-page__title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.admin-ai-settings-page__subtitle {
+  font-size: 13px;
+  color: var(--text-muted, #6b7280);
+  margin: 4px 0 0;
+}
+
+.admin-ai-settings-page__btn-save {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.admin-ai-settings-page__btn-save:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.admin-ai-settings-page__btn-save:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Sub-nav */
+.admin-ai-settings-page__subnav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.1));
+}
+
+.admin-ai-settings-page__subnav-link {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted, #6b7280);
+  text-decoration: none;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid transparent;
+  border-bottom: none;
+  transition: color 0.15s;
+}
+
+.admin-ai-settings-page__subnav-link:hover {
+  color: var(--text);
+}
+
+.admin-ai-settings-page__subnav-link--active {
+  color: var(--primary);
+  background: rgba(255,255,255,0.04);
+  border-color: var(--border-color, rgba(255,255,255,0.1));
+}
+
+.admin-ai-settings-page__warning-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 8px;
+  color: #f59e0b;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.admin-ai-settings-page__loading {
+  padding: 48px;
+  text-align: center;
+  color: var(--text-muted, #6b7280);
+}
+
+/* Form */
+.admin-ai-settings-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-ai-settings-page__section {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-ai-settings-page__section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.08));
+}
+
+.admin-ai-settings-page__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-ai-settings-page__row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .admin-ai-settings-page__row2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-ai-settings-page__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.admin-ai-settings-page__hint {
+  font-size: 11px;
+  color: var(--text-muted, #6b7280);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.admin-ai-settings-page__input {
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+  background: var(--background);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  max-width: 280px;
+}
+
+.admin-ai-settings-page__input:focus {
+  border-color: var(--primary);
+}
+
+.admin-ai-settings-page__select {
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+  background: var(--background);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  max-width: 320px;
+}
+
+.admin-ai-settings-page__select:focus {
+  border-color: var(--primary);
+}
+
+.admin-ai-settings-page__textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+  background: var(--background);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.admin-ai-settings-page__textarea:focus {
+  border-color: var(--primary);
+}
+
+.admin-ai-settings-page__range {
+  width: 100%;
+  max-width: 360px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.admin-ai-settings-page__range-labels {
+  display: flex;
+  justify-content: space-between;
+  max-width: 360px;
+  font-size: 11px;
+  color: var(--text-muted, #6b7280);
+}
+
+.admin-ai-settings-page__toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-ai-settings-page__checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.admin-ai-settings-page__toggle-label {
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.admin-ai-settings-page__save-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 4px;
+}
+
+.admin-ai-settings-page__unsaved-hint {
+  font-size: 12px;
+  color: #f59e0b;
+}

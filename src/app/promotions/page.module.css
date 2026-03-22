@@ -1,0 +1,127 @@
+.promotions-page-page {
+  min-height: 100vh;
+  background: var(--background-homepage);
+  color: var(--text-light);
+}
+
+.promotions-page-page__content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px 40px;
+}
+
+@media (min-width: 640px) {
+  .promotions-page-page__content {
+    padding-inline: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .promotions-page-page__content {
+    padding-block: 40px 56px;
+  }
+}
+
+.promotions-page-page__hero {
+  margin-bottom: 24px;
+}
+
+.promotions-page-page__title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+@media (min-width: 768px) {
+  .promotions-page-page__title {
+    font-size: 32px;
+  }
+}
+
+.promotions-page-page__subtitle {
+  font-size: 14px;
+  color: rgba(226, 232, 240, 0.8);
+  max-width: 640px;
+}
+
+.promotions-page-page__list-section {
+  margin-top: 16px;
+}
+
+.promotions-page-page__state {
+  padding: 24px 16px;
+  border-radius: var(--border-radius-lg);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+  text-align: center;
+}
+
+.promotions-page-page__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.promotions-page-page__item {
+  border-radius: 20px;
+  padding: 14px 14px 16px;
+  background: radial-gradient(
+      circle at top left,
+      rgba(29, 185, 84, 0.16),
+      transparent 55%
+    ),
+    rgba(12, 12, 12, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+}
+
+.promotions-page-page__item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.promotions-page-page__item-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(29, 185, 84, 0.16);
+  color: var(--primary-light);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.promotions-page-page__item-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.promotions-page-page__item-subtitle {
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.82);
+}
+
+.promotions-page-page__item-action-button {
+  margin-top: 10px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 185, 84, 0.4);
+  background: rgba(29, 185, 84, 0.1);
+  color: var(--primary-light);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.promotions-page-page__item-action-button:hover {
+  background: rgba(29, 185, 84, 0.16);
+  border-color: rgba(29, 185, 84, 0.5);
+}
+
