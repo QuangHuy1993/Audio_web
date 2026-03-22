@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/expire-checkout-sessions",
-      "schedule": "*/10 * * * *"
+      "schedule": "0 1 * * *"
     }
   ]
 }
