@@ -614,20 +614,29 @@ function ProductsPage() {
                     {recommendation.recommendedProducts.map((p) => (
                       <div
                         key={p.id}
-                        style={{
-                          padding: "16px",
-                          borderRadius: "16px",
-                          background: "rgba(15, 23, 42, 0.6)",
-                          border: "1px solid rgba(148, 163, 184, 0.2)",
-                          cursor: "pointer"
-                        }}
+                        className={styles["products-page-page__ai-recommendation-card"]}
                         onClick={() => router.push(`/products/${p.id}`)}
                       >
-                        <p style={{ fontSize: "10px", fontWeight: 800, color: "var(--primary)", textTransform: "uppercase", marginBottom: "4px" }}>{p.brandName}</p>
-                        <h4 style={{ fontSize: "14px", fontWeight: 700, marginBottom: "8px" }}>{p.name}</h4>
-                        <p style={{ fontSize: "14px", fontWeight: 900, color: "var(--accent)" }}>
-                          {formatPrice(p.salePrice ?? p.price, "VND")}
-                        </p>
+                        <div className={styles["products-page-page__ai-recommendation-image-box"]}>
+                          {p.imageUrl ? (
+                            <Image 
+                              src={p.imageUrl} 
+                              alt={p.name} 
+                              fill 
+                              sizes="120px"
+                              style={{ objectFit: 'contain' }}
+                            />
+                          ) : (
+                            <div style={{ width: '100%', height: '100%', background: 'rgba(255,255,255,0.05)' }} />
+                          )}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <p style={{ fontSize: "10px", fontWeight: 800, color: "var(--primary)", textTransform: "uppercase", marginBottom: "4px" }}>{p.brandName}</p>
+                          <h4 style={{ fontSize: "14px", fontWeight: 700, marginBottom: "8px", color: '#fff', lineClamp: 2, display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{p.name}</h4>
+                          <p style={{ fontSize: "14px", fontWeight: 900, color: "var(--accent)" }}>
+                            {formatPrice(p.salePrice ?? p.price, "VND")}
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -1181,6 +1190,21 @@ function ProductsPage() {
                     value={maxPrice ?? ""} 
                     onChange={(e) => setMaxPrice(e.target.value ? Number(e.target.value) : null)}
                   />
+                </div>
+              </div>
+
+              <div className={styles["products-page-page__modal-section"]}>
+                <h3 className={styles["products-page-page__modal-section-title"]}>Danh mục</h3>
+                <div className={styles["products-page-page__modal-brands-grid"]}>
+                  {categories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      className={`${styles["products-page-page__modal-brand-tag"]} ${activeCategoryId === cat.id ? styles["products-page-page__modal-brand-tag--active"] : ""}`}
+                      onClick={() => setActiveCategoryId(cat.id === activeCategoryId ? null : cat.id)}
+                    >
+                      {cat.name} ({cat.productCount})
+                    </button>
+                  ))}
                 </div>
               </div>
 

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import CheckoutStepper from "@/features/shop/components/checkout/CheckoutStepper";
@@ -28,7 +28,11 @@ const shippingBaseFee = 30_000;
 
 const CheckoutPage: React.FC = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { status: sessionStatus } = useSession();
+
+  const buyNowProductId = searchParams?.get("buyNow") ?? null;
+  const buyNowQty = searchParams?.get("qty") ?? "1";
 
   const [isRedirectingToSuccess, setIsRedirectingToSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -126,8 +130,11 @@ const CheckoutPage: React.FC = () => {
         setIsLoading(true);
         setError(null);
 
+        const cartUrl = buyNowProductId 
+          ? `/api/shop/checkout/buy-now?productId=${buyNowProductId}&qty=${buyNowQty}`
+          : "/api/shop/cart";
         const [cartRes, addressRes, sessionRes] = await Promise.all([
-          fetch("/api/shop/cart"),
+          fetch(cartUrl),
           fetch("/api/shop/addresses"),
           fetch("/api/shop/payments/sessions/active"),
         ]);
@@ -185,7 +192,7 @@ const CheckoutPage: React.FC = () => {
     };
 
     void loadData();
-  }, [router, sessionStatus]);
+  }, [router, sessionStatus, buyNowProductId, buyNowQty]);
 
   useEffect(() => {
     if (isLoading || !cart || !selectedAddressId) {
@@ -671,6 +678,9 @@ const CheckoutPage: React.FC = () => {
             discountCouponCode: appliedDiscountCouponCode ?? undefined,
             shippingCouponCode: appliedShippingCouponCode ?? undefined,
             note: note || undefined,
+            isBuyNow: !!buyNowProductId,
+            buyNowProductId: buyNowProductId || undefined,
+            buyNowQuantity: buyNowProductId ? Number(buyNowQty) : undefined,
           }),
         });
 
@@ -719,6 +729,9 @@ const CheckoutPage: React.FC = () => {
             discountCouponCode: appliedDiscountCouponCode ?? undefined,
             shippingCouponCode: appliedShippingCouponCode ?? undefined,
             note: note || undefined,
+            isBuyNow: !!buyNowProductId,
+            buyNowProductId: buyNowProductId || undefined,
+            buyNowQuantity: buyNowProductId ? Number(buyNowQty) : undefined,
           }),
         });
 
@@ -778,6 +791,9 @@ const CheckoutPage: React.FC = () => {
           discountCouponCode: appliedDiscountCouponCode ?? undefined,
           shippingCouponCode: appliedShippingCouponCode ?? undefined,
           note: note || undefined,
+          isBuyNow: !!buyNowProductId,
+          buyNowProductId: buyNowProductId || undefined,
+          buyNowQuantity: buyNowProductId ? Number(buyNowQty) : undefined,
         }),
       });
 

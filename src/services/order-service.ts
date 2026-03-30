@@ -192,47 +192,91 @@ export async function createOrder(
     // có thể tạo 2 đơn và trừ kho 2 lần.
     await client.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${userId}))`;
 
-    const cart = await client.cart.findUnique({
-      where: { userId },
-      select: {
-        id: true,
-        status: true,
-        items: {
-          select: {
-            id: true,
-            productId: true,
-            quantity: true,
-            unitPrice: true,
-            product: {
-              select: {
-                id: true,
-                name: true,
-                slug: true,
-                stock: true,
-                status: true,
-                images: {
-                  where: { isPrimary: true },
-                  select: { url: true },
-                  take: 1,
+    let cartItemsData: any[] = [];
+    let cartIdForDelete: string | null = null;
+
+    if (dto.isBuyNow && dto.buyNowProductId && dto.buyNowQuantity) {
+      const product = await client.product.findUnique({
+        where: { id: dto.buyNowProductId },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          stock: true,
+          status: true,
+          price: true,
+          salePrice: true,
+          images: {
+            where: { isPrimary: true },
+            select: { url: true },
+            take: 1,
+          },
+        },
+      });
+
+      if (!product) {
+        throw new OrderServiceError("PRODUCT_NOT_FOUND", "Sản phẩm không tồn tại.");
+      }
+
+      const price = Number(product.price);
+      const salePrice = product.salePrice ? Number(product.salePrice) : null;
+      const unitPrice = salePrice !== null && salePrice < price ? salePrice : price;
+
+      cartItemsData = [
+        {
+          id: "buy_now_item",
+          productId: product.id,
+          quantity: dto.buyNowQuantity,
+          unitPrice,
+          product,
+        },
+      ];
+    } else {
+      const cart = await client.cart.findUnique({
+        where: { userId },
+        select: {
+          id: true,
+          status: true,
+          items: {
+            select: {
+              id: true,
+              productId: true,
+              quantity: true,
+              unitPrice: true,
+              product: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                  stock: true,
+                  status: true,
+                  images: {
+                    where: { isPrimary: true },
+                    select: { url: true },
+                    take: 1,
+                  },
                 },
               },
             },
           },
         },
-      },
-    });
+      });
 
-    if (!cart || cart.items.length === 0) {
-      throw new OrderServiceError(
-        "CART_EMPTY",
-        "Giỏ hàng trống, vui lòng thêm sản phẩm trước khi đặt.",
-      );
+      if (!cart || cart.items.length === 0) {
+        throw new OrderServiceError(
+          "CART_EMPTY",
+          "Giỏ hàng trống, vui lòng thêm sản phẩm trước khi đặt.",
+        );
+      }
+
+      cartItemsData = cart.items;
+      cartIdForDelete = cart.id;
     }
 
     let subtotal = 0;
     let totalQuantity = 0;
 
-    for (const item of cart.items) {
+    for (const item of cartItemsData) {
       if (!item.product) {
         throw new OrderServiceError(
           "PRODUCT_NOT_FOUND",
@@ -550,7 +594,7 @@ export async function createOrder(
 
     const orderItems: OrderItemSummaryDto[] = [];
 
-    for (const item of cart.items) {
+    for (const item of cartItemsData) {
       const unitPriceNumber = Number(item.unitPrice);
       const subtotalItem = unitPriceNumber * item.quantity;
       const primaryImageUrl = item.product.images[0]?.url ?? null;
@@ -584,14 +628,16 @@ export async function createOrder(
       });
     }
 
-    await client.cartItem.deleteMany({
-      where: { cartId: cart.id },
-    });
+    if (cartIdForDelete) {
+      await client.cartItem.deleteMany({
+        where: { cartId: cartIdForDelete },
+      });
 
-    await client.cart.update({
-      where: { id: cart.id },
-      data: { status: "CONVERTED" },
-    });
+      await client.cart.update({
+        where: { id: cartIdForDelete },
+        data: { status: "CONVERTED" },
+      });
+    }
 
     if (discountCouponId) {
       await client.coupon.update({

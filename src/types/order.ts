@@ -38,6 +38,9 @@ export type CreateOrderRequestDto = {
   /** Mã freeship (FREE_SHIPPING). */
   shippingCouponCode?: string;
   note?: string;
+  isBuyNow?: boolean;
+  buyNowProductId?: string;
+  buyNowQuantity?: number;
 };
 
 export type CancelOrderRequestDto = {

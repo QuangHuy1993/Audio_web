@@ -33,6 +33,43 @@
 }
 
 @media (min-width: 640px) {
+  .products-page-page__ai-recommendation-hero {
+    margin-bottom: 40px;
+    padding: 32px;
+    border-radius: 24px;
+    background: radial-gradient(circle at top left, rgba(29, 185, 84, 0.1), rgba(15, 23, 42, 0.98));
+    border: 1px solid rgba(29, 185, 84, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .products-page-page__ai-recommendation-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .products-page-page__ai-recommendation-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+    border-color: var(--primary);
+  }
+
+  .products-page-page__ai-recommendation-image-box {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    flex-shrink: 0;
+  }
   .products-page-page__breadcrumb-inner {
     padding-inline: 24px;
     padding-block: 20px;

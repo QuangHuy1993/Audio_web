@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { MdLock } from "react-icons/md";
 import ShopHeader from "@/components/layout/ShopHeader";
 import ShopFooter from "@/components/layout/ShopFooter";
@@ -35,7 +35,9 @@ export default function CheckoutAppPage() {
 
           <main className={styles["checkout-page__inner"]}>
             <div className={styles["checkout-page__stepper"]}>
-              <CheckoutPage />
+              <Suspense fallback={<div style={{ padding: 40, textAlign: 'center' }}>Đang tải thông tin...</div>}>
+                <CheckoutPage />
+              </Suspense>
             </div>
 
             <div className={styles["checkout-page__footer-lock"]}>

@@ -504,8 +504,10 @@
 .home-page-page__product-image {
   position: relative;
   height: 240px;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
+  background-color: #ffffff; /* White background for transparent PNGs to pop out */
 }
 
 .home-page-page__product-image-badges {

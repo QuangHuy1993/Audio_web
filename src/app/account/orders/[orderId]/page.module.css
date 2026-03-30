@@ -1,41 +1,88 @@
- .account-order-detail-page {
-   padding: 24px;
-   color: var(--text-primary);
+.account-order-detail-page {
+   max-width: 900px;
+   margin: 40px auto;
+   padding: 40px;
+   background: rgba(255, 255, 255, 0.03);
+   backdrop-filter: blur(10px);
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   border-radius: 24px;
+   color: #ffffff;
+   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
  }
 
  .account-order-detail-page__back-button {
-   margin-bottom: 16px;
-   background: transparent;
-   border: none;
+   margin-bottom: 24px;
+   background: rgba(255, 255, 255, 0.05);
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   padding: 8px 16px;
+   border-radius: 12px;
    color: var(--primary);
    cursor: pointer;
    display: inline-flex;
    align-items: center;
-   gap: 4px;
+   transition: all 0.2s ease;
+   gap: 6px;
    font-size: 14px;
+ }
+
+ .account-order-detail-page__back-button:hover {
+   background: rgba(255, 255, 255, 0.1);
+   transform: translateX(-4px);
  }
 
  .account-order-detail-page__heading {
-   font-size: 20px;
-   font-weight: 700;
-   margin-bottom: 8px;
+   font-size: 28px;
+   font-weight: 800;
+   margin-bottom: 24px;
+   letter-spacing: -0.5px;
+   background: var(--gradient-premium);
+   -webkit-background-clip: text;
+   background-clip: text;
+   -webkit-text-fill-color: transparent;
  }
 
  .account-order-detail-page__meta {
-   margin-bottom: 24px;
-   font-size: 14px;
+   margin-bottom: 32px;
+   font-size: 15px;
+   padding: 20px;
+   background: rgba(255, 255, 255, 0.05);
+   border-radius: 16px;
    display: grid;
-   gap: 4px;
+   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   gap: 16px;
+   border: 1px solid rgba(255, 255, 255, 0.05);
  }
 
  .account-order-detail-page__meta-label {
-   font-weight: 500;
+   font-weight: 700;
+   color: rgba(255, 255, 255, 0.4);
+   text-transform: uppercase;
+   font-size: 11px;
+   display: block;
+   margin-bottom: 4px;
+   letter-spacing: 0.5px;
+ }
+ 
+ .account-order-detail-page__meta span:last-child {
+   font-weight: 600;
+   color: #ffffff;
  }
 
  .account-order-detail-page__section-title {
-   font-size: 16px;
-   font-weight: 600;
-   margin: 24px 0 8px;
+   font-size: 18px;
+   font-weight: 700;
+   margin: 32px 0 16px;
+   color: #ffffff;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+ }
+ 
+ .account-order-detail-page__section-title::after {
+   content: "";
+   flex: 1;
+   height: 1px;
+   background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent);
  }
 
  .account-order-detail-page__items-table {
@@ -46,10 +93,13 @@
 
  .account-order-detail-page__items-header-cell {
    text-align: left;
-   padding: 8px;
+   padding: 12px 8px;
    font-size: 13px;
-   color: var(--text-secondary);
-   border-bottom: 1px solid var(--border-subtle);
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   font-weight: 700;
+   color: rgba(255, 255, 255, 0.5);
+   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
  }
 
  .account-order-detail-page__items-header-cell--right {
@@ -57,16 +107,23 @@
  }
 
  .account-order-detail-page__items-row {
-   border-bottom: 1px solid var(--border-subtle);
+   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+   transition: background 0.2s ease;
+ }
+ 
+ .account-order-detail-page__items-row:hover {
+   background: rgba(255, 255, 255, 0.02);
  }
 
  .account-order-detail-page__items-cell {
-   padding: 10px 8px;
-   font-size: 14px;
+   padding: 16px 8px;
+   font-size: 15px;
+   color: rgba(255, 255, 255, 0.9);
  }
 
  .account-order-detail-page__items-cell--right {
    text-align: right;
+   font-weight: 600;
  }
 
  .account-order-detail-page__product-cell {
@@ -77,12 +134,18 @@
 
  .account-order-detail-page__product-image-wrapper {
    position: relative;
-   width: 48px;
-   height: 48px;
-   border-radius: 8px;
+   width: 64px;
+   height: 64px;
+   border-radius: 12px;
    overflow: hidden;
-   background: var(--background-subtle);
+   background: #ffffff;
+   padding: 4px;
    flex-shrink: 0;
+   border: 1px solid rgba(255, 255, 255, 0.1);
+ }
+ 
+ .account-order-detail-page__product-image-wrapper img {
+   object-fit: contain !important;
  }
 
  .account-order-detail-page__product-image-fallback {
@@ -96,16 +159,31 @@
  }
 
  .account-order-detail-page__shipping-block {
-   margin-bottom: 24px;
-   font-size: 14px;
-   line-height: 1.5;
+   margin-bottom: 32px;
+   font-size: 15px;
+   line-height: 1.6;
+   padding: 24px;
+   background: rgba(255, 255, 255, 0.03);
+   border-radius: 16px;
+   border-left: 4px solid var(--primary);
+ }
+ 
+ .account-order-detail-page__shipping-block p:first-child {
+   font-weight: 700;
+   font-size: 16px;
+   margin-bottom: 4px;
+   color: #ffffff;
  }
 
  .account-order-detail-page__summary {
-   font-size: 14px;
+   font-size: 15px;
    display: grid;
-   gap: 4px;
-   max-width: 320px;
+   gap: 12px;
+   width: 100%;
+   padding: 24px;
+   background: rgba(255, 255, 255, 0.03);
+   border-radius: 16px;
+   border: 1px solid rgba(255, 255, 255, 0.05);
  }
 
  .account-order-detail-page__summary-row {
@@ -115,12 +193,14 @@
  }
 
  .account-order-detail-page__summary-label {
-   color: var(--text-secondary);
+   color: rgba(255, 255, 255, 0.6);
  }
 
  .account-order-detail-page__summary-value--total {
-   font-weight: 700;
-   font-size: 16px;
+   font-weight: 900;
+   font-size: 24px;
+   color: var(--primary);
+   text-shadow: 0 0 20px rgba(29, 185, 84, 0.3);
  }
 
  .account-order-detail-page__status-pill {
@@ -148,23 +228,33 @@
  }
 
  .account-order-detail-page__actions {
-   margin-top: 24px;
+   margin-top: 40px;
    display: flex;
-   flex-wrap: wrap;
-   gap: 12px;
+   justify-content: center;
+   padding-top: 32px;
+   border-top: 1px solid rgba(255, 255, 255, 0.05);
  }
-
+ 
  .account-order-detail-page__cancel-button {
-   padding: 8px 16px;
-   border-radius: 999px;
-   border: 1px solid var(--border-subtle);
-   background: var(--background-elevated);
+   padding: 12px 32px;
+   border-radius: 14px;
+   border: 1px solid rgba(244, 67, 54, 0.3);
+   background: rgba(244, 67, 54, 0.05);
+   color: #f44336;
    cursor: pointer;
    font-size: 14px;
+   font-weight: 700;
+   transition: all 0.2s ease;
  }
-
+ 
+ .account-order-detail-page__cancel-button:hover {
+   background: rgba(244, 67, 54, 0.15);
+   border-color: #f44336;
+   transform: translateY(-2px);
+   box-shadow: 0 4px 12px rgba(244, 67, 54, 0.2);
+ }
+ 
  .account-order-detail-page__cancel-button--danger {
-   border-color: #fecaca;
-   color: #b91c1c;
+   /* Tích hợp vào base class nhưng giữ modifier để tránh lỗi TSX */
+   border-color: rgba(244, 67, 54, 0.5);
  }
-

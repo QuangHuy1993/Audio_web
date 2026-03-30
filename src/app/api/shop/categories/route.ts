@@ -21,7 +21,9 @@ export type CategorySidebarItemDto = {
 
 export async function GET() {
   const categories = await prisma.category.findMany({
-    where: { parentId: null },
+    where: { 
+      parentId: null,
+    },
     select: {
       id: true,
       name: true,

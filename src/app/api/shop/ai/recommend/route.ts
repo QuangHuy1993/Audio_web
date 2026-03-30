@@ -56,9 +56,16 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 1. Fetch products for context (limit to some active products)
+    // 1. Fetch products for context
+    // We try to fetch products that are somewhat relevant to the budget if possible,
+    // or just a larger set to give the AI more options.
+    const budgetValue = parseInt(budget.replace(/\./g, "").replace(/ VND/i, "")) || 0;
+
     const productsRaw = await prisma.product.findMany({
-      where: { status: "ACTIVE", stock: { gt: 0 } },
+      where: { 
+        status: "ACTIVE", 
+        stock: { gt: 0 },
+      },
       select: {
         id: true,
         name: true,
@@ -74,7 +81,11 @@ export async function POST(request: NextRequest) {
           take: 1
         }
       },
-      take: 20,
+      // Reduced context size to avoid GROQ TPM limits (6000 tokens)
+      take: 35,
+      orderBy: budgetValue > 0 ? [
+        { price: 'desc' } // Just a heuristic to get varied products
+      ] : { createdAt: 'desc' },
     });
 
     // Convert Decimal to Number for easier handling
@@ -86,13 +97,14 @@ export async function POST(request: NextRequest) {
     }));
 
     // 2. Build system prompt for structured recommendation
+    // Truncate descriptions to save tokens
     const catalogText = products.map((p, i) => 
-      `${i+1}. ${p.name} - ${p.brand?.name} - ${p.category?.name} - Giá: ${p.salePrice ?? p.price} VND - Đặc tính: ${p.aiDescription}`
+      `${i+1}. ID: ${p.id} | ${p.name} (${p.brand?.name}) - ${p.salePrice ?? p.price} VND | Mô tả: ${p.aiDescription?.substring(0, 120)}...`
     ).join("\n");
 
     const systemPrompt = `
-Bạn là chuyên gia tư vấn âm thanh của Đức Uy Audio. 
-Nhiệm vụ: Dựa trên nhu cầu khách hàng, hãy chọn ra 3 sản phẩm phù hợp nhất từ danh sách bên dưới và đưa ra lời giải thích chuyên môn ngắn gọn.
+Bạn là chuyên gia tư vấn âm thanh cao cấp của Đức Uy Audio. 
+Nhiệm vụ: Dựa trên nhu cầu khách hàng, hãy chọn ra tối đa 3 sản phẩm phù hợp NHẤT từ danh sách sản phẩm hiện có bên dưới.
 
 THÔNG TIN KHÁCH HÀNG:
 - Ngân sách: ${budget} VNĐ
@@ -100,18 +112,19 @@ THÔNG TIN KHÁCH HÀNG:
 - Gu âm nhạc: ${musicTaste}
 - Yêu cầu thêm: ${extraRequests ?? "Không có"}
 
-DANH SÁCH SẢN PHẨM HIỆN CÓ:
+DANH SÁCH SẢN PHẨM HIỆN CÓ TẠI CỬA HÀNG (CHỈ ĐƯỢC CHỌN TRONG ĐÂY):
 ${catalogText}
 
-QUY TẮC TRẢ LỜI:
-1. Chỉ chọn sản phẩm CÓ TRONG DANH SÁCH TRÊN.
-2. Trả lời dưới dạng JSON với cấu trúc:
+QUY TẮC BẮT BUỘC:
+1. CHỈ ĐƯỢC CHỌN sản phẩm có trong danh sách TRÊN. Tuyệt đối không tự bịa ra sản phẩm khác (như JBL, Bose... nếu không có trong danh sách).
+2. Trả lời duy nhất một khối JSON theo cấu trúc:
 {
-  "expertVerdict": "Lời giải thích chuyên sâu của bạn (tối đa 2 đoạn, không dùng markdown)",
+  "expertVerdict": "Lời giải thích chuyên sâu (tối đa 3 câu). Giải thích tại sao cấu hình này phù hợp với gu nhạc và phòng của khách.",
   "recommendedProductIds": ["id1", "id2", "id3"]
 }
-3. Nếu không có đủ 3 sản phẩm phù hợp, hãy chọn ít nhất 1 cái tốt nhất.
-4. Ưu tiên các sản phẩm có giá nằm trong hoặc gần khoảng ngân sách.
+3. Cố gắng chọn sản phẩm có tổng giá trị gần bằng hoặc thấp hơn ngân sách khách hàng.
+4. Nếu ngân sách khách hàng quá cao mà sản phẩm hiện có chỉ là giá thấp, hãy chọn những cái tốt nhất hiện có và giải thích rõ.
+5. Luôn ưu tiên độ chính xác về ID sản phẩm.
     `;
 
     const model = aiConfig.ai_model;
@@ -175,7 +188,21 @@ QUY TẮC TRẢ LỜI:
       recommendedProducts
     });
 
-  } catch (error) {
+  } catch (error: any) {
+    if (error instanceof Error && error.message.startsWith("GROQ_429:")) {
+      const match = error.message.match(/try again in ([0-9.]+)s/i);
+      if (match) {
+        const secs = Math.ceil(parseFloat(match[1]));
+        return NextResponse.json(
+          { error: `Hệ thống AI đang quá tải. Vui lòng thử lại sau ${secs} giây.` },
+          { status: 429 }
+        );
+      }
+      return NextResponse.json(
+        { error: "Hệ thống AI đang bị quá tải. Vui lòng thử lại sau một chút." },
+        { status: 429 }
+      );
+    }
     console.error("[AI Recommend API Error]:", error);
     return NextResponse.json({ error: "Đã có lỗi xảy ra." }, { status: 500 });
   }

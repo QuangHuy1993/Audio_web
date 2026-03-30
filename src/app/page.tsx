@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import ShopHeader from "@/components/layout/ShopHeader";
 import ShopFooter from "@/components/layout/ShopFooter";
 import PageTransitionOverlay from "@/components/shared/PageTransitionOverlay";
+import Link from "next/link";
+import { getHomeData } from "@/actions/home";
 import {
   MdBolt,
   MdCheckCircle,
@@ -22,48 +24,7 @@ import styles from "./page.module.css";
 const HERO_SPEAKER_IMAGE =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuD2FxXMaExS4YsAoSXKKRo8eXkyCDwGVDMwyd6PxMr_OoWIwx-6zxe6IAh8AJ4rVMgsSsY9NXYnUXH9YQ_pyuhHpOfu_nYOV-Ux1clfGvh5xJ69zI14PYi8_7ISRJSpDE0nwpD8FzbdrRSf-nLEXZbd7Gn4ohfn90w11kUkzq78sBBh3OUAW-4Fq0aOL_ZzYX0eV6JFDL5EzIuLeE-6oM40MVFBGiz9MT4bGaC5cEcvS4SEc01ijxsFxRQ7dQWqfl6cjw4S6VHmqP6N";
 
-const FEATURED_PRODUCTS = [
-  {
-    id: 1,
-    category: "Bookshelf Speaker",
-    title: "JBL Synthesis 4367 Studio Monitor",
-    price: "24.500.000đ",
-    oldPrice: "28.000.000đ",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBGsYOi-l_5Bn5gpsS6W1uZF-WMg0Sm6tsG6ym7jT8Ck-zwJ5rzk08pAW6cAHZT7W__jc0HwtpguyrLgTSp-_vXwTX8CeK82vvWpSIo0ArjbzyBkxjOR_gqF8o1fx4cF3FyoFklGVnP-X4DOq4StdAYKgPUvjZilbc6uSFD4PMAJod_eN_ogKrmh2GXmKt4ODIaukmo0ALTbN9paMiW_YDRsBCWpAE83_YBiB0NbfeiT1CrCmq0ob19hvVlhp2oj7QhDT2ovMPOwOlT",
-    badges: [
-      { label: "-15%", variant: "discount" as const },
-      { label: "Hi-end", variant: "accent" as const },
-    ],
-  },
-  {
-    id: 2,
-    category: "Headphones",
-    title: "Focal Utopia 2024 Reference",
-    price: "115.000.000đ",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBtVPVFEMOsJkRkvlqPLYwTuOfab_h6kY6kUS1cvQWdjsSfWjE-xPQUNj2SzwxDGpNoSCsPUMHzkxK8AxNxg6AbyoZc8iIlksMBTLk6Gn2FBZMRdhx18PNzIJiqNiwhDM6ydOwkxvin5WOnoe75HkaVikVJlDF3i622r6asKWznXx4ZnC4njrzliNRTccODP2X5kgdiTre2CEip4ocADoCmMxSU4DlN-e1jsbVTsokw-PQ2u_2J4OAAfIJKiFtisZPNXvgQbkxvzNIh",
-    badges: [{ label: "Mới", variant: "accent" as const }],
-  },
-  {
-    id: 3,
-    category: "Amplifiers",
-    title: "McIntosh MA352 Hybrid Integrated",
-    price: "145.000.000đ",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBJvSK9KsJZ263LCyjPea6hC-0VjTL29V9fA7CNjEq1Z8_jo3clARt2-3fltuoXmQFiuj31wMpdYcipUNXJ-WAMa3OqSySFyMxQ74E6zFxC0whCJSHcccZMGCyaCO1uynDML3wK7-pqPtdqncCRky7olz2EvP0xnUKeJBOmqikRWfUJSzEMZsdspfDrQz6s3iaAizAJJxgiQtTcPboIJ_0OLfc2oMPfkJ0jt9TUMq6lDpUzERudfpPGN8bUAmLj1h3wjQ0hKIwz53yc",
-    badges: [{ label: "Best Seller", variant: "accent" as const }],
-  },
-  {
-    id: 4,
-    category: "Turntables",
-    title: "Technics SL-1200G Reference",
-    price: "89.900.000đ",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDbQu31Vs2K6Vg4Tty6e1iOkMUVL0hVmS-6dHS0s9eUyKeMARVynlxL61jlqYRN_8aD65oJzhh98-qnhXsOFOyQCLvbCBcN00UaDHO25otFwBINyDJo_pHe3GFSJ3U7B_oz5Q1t2YatwrSBQ_o9DTcs5WRdvrnPztfpjHLoJSSnWQbn21DznTNW9S0iriWq0v6I9EGmIJDTlRHeMMEUBtdje4E6Fm471GF1FSAB_fSwM6cHsh1ucDC02_i-crl1aUu9dNS0WYAoFwzh",
-    badges: [{ label: "Hi-end", variant: "accent" as const }],
-  },
-];
+const FEATURED_PRODUCTS: any[] = [];
 
 const SOLUTION_IMAGES = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCjMiGiP-vMsLNeUQh4LGZRcYjpKk_jdlvrYhvd3xI7ia6QLhC9n-mQFcalOYm72UG060IFeH3juXrZjW7tpTL11POr7EUhZOE_6XEGDypyA8YhJOa-Is2ORg19NFPBljG3lrg4dhhF2DNpWV6D7NMXfPZff5tdZnaWYaHambMAaODE2xMi0Wj50vXTl_T_fFj6UipAYXEw_2BkT9qGfN932h4bBDgWrnTBv5ebyIxRJg6KTQOBHpwAUEBskTtw0s1DSVFz_dLhEV7c",
@@ -102,6 +63,86 @@ export default function HomePage() {
   const [isTransitionActive, setIsTransitionActive] = useState(true);
   const router = useRouter();
 
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [categorizedProducts, setCategorizedProducts] = useState<any[]>([]);
+
+  // Helper cho render card
+  const renderProductCard = (product: any) => {
+    const imageUrl = product.images?.[0]?.url || "/placeholder.png";
+    const priceNum = Number(product.price);
+    const salePriceNum = product.salePrice ? Number(product.salePrice) : null;
+    const hasDiscount = salePriceNum !== null && salePriceNum < priceNum;
+    const displayPrice = hasDiscount ? salePriceNum : priceNum;
+    const formatVnd = (val: number) => new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 }).format(val);
+    const discountPct = hasDiscount ? Math.round(((priceNum - salePriceNum) / priceNum) * 100) : 0;
+
+    return (
+      <Link
+        href={`/products/${product.id}`}
+        key={product.id}
+        className={styles["home-page-page__product-card"]}
+      >
+        <div
+          className={styles["home-page-page__product-image"]}
+          style={{ backgroundImage: `url("${imageUrl}")` }}
+        >
+          <div
+            className={styles["home-page-page__product-image-badges"]}
+          >
+            {hasDiscount && (
+              <span
+                className={`${styles["home-page-page__product-image-badge"]} ${styles["home-page-page__product-image-badge--discount"]}`}
+              >
+                -{discountPct}%
+              </span>
+            )}
+            {(product.aiTags || []).slice(0, 1).map((tag: string) => (
+              <span
+                key={tag}
+                className={`${styles["home-page-page__product-image-badge"]} ${styles["home-page-page__product-image-badge--accent"]}`}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className={styles["home-page-page__product-add-cart"]}
+            onClick={(e) => {
+              e.preventDefault(); 
+            }}
+          >
+            <MdAddShoppingCart />
+          </button>
+        </div>
+
+        <div className={styles["home-page-page__product-content"]}>
+          <p className={styles["home-page-page__product-category"]}>
+            {product.category?.name || "Danh mục"}
+          </p>
+          <h4 className={styles["home-page-page__product-title"]}>
+            {product.name}
+          </h4>
+          <div className={styles["home-page-page__product-price-row"]}>
+            <span
+              className={styles["home-page-page__product-price-main"]}
+            >
+              {formatVnd(displayPrice)}
+            </span>
+            {hasDiscount && (
+              <span
+                className={styles["home-page-page__product-price-old"]}
+              >
+                {formatVnd(priceNum)}
+              </span>
+            )}
+          </div>
+        </div>
+      </Link>
+    );
+  };
+
   // AI Form state
   const [budget, setBudget] = useState(50);
   const [roomType, setRoomType] = useState("");
@@ -114,6 +155,15 @@ export default function HomePage() {
   } | null>(null);
 
   useEffect(() => {
+    getHomeData().then((data) => {
+      if (data?.featuredProducts) {
+        setFeaturedProducts(data.featuredProducts);
+      }
+      if (data?.categorizedProducts) {
+        setCategorizedProducts(data.categorizedProducts);
+      }
+    });
+
     const timeoutId = window.setTimeout(() => {
       setIsTransitionActive(false);
     }, 1100);
@@ -470,70 +520,37 @@ export default function HomePage() {
           </div>
 
           <div className={styles["home-page-page__featured-grid"]}>
-            {FEATURED_PRODUCTS.map((product) => (
-              <article
-                key={product.id}
-                className={styles["home-page-page__product-card"]}
-              >
-                <div
-                  className={styles["home-page-page__product-image"]}
-                  style={{ backgroundImage: `url("${product.image}")` }}
-                >
-                  <div
-                    className={styles["home-page-page__product-image-badges"]}
-                  >
-                    {product.badges.map((badge) => (
-                      <span
-                        key={badge.label}
-                        className={`${styles["home-page-page__product-image-badge"]} ${
-                          badge.variant === "discount"
-                            ? styles[
-                                "home-page-page__product-image-badge--discount"
-                              ]
-                            : styles[
-                                "home-page-page__product-image-badge--accent"
-                              ]
-                        }`}
-                      >
-                        {badge.label}
-                      </span>
-                    ))}
-                  </div>
-
-                  <button
-                    type="button"
-                    className={styles["home-page-page__product-add-cart"]}
-                  >
-                    <MdAddShoppingCart />
-                  </button>
-                </div>
-
-                <div className={styles["home-page-page__product-content"]}>
-                  <p className={styles["home-page-page__product-category"]}>
-                    {product.category}
-                  </p>
-                  <h4 className={styles["home-page-page__product-title"]}>
-                    {product.title}
-                  </h4>
-                  <div className={styles["home-page-page__product-price-row"]}>
-                    <span
-                      className={styles["home-page-page__product-price-main"]}
-                    >
-                      {product.price}
-                    </span>
-                    {product.oldPrice && (
-                      <span
-                        className={styles["home-page-page__product-price-old"]}
-                      >
-                        {product.oldPrice}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))}
+            {featuredProducts.map(renderProductCard)}
           </div>
         </section>
+
+        {/* Categorized Products */}
+        {categorizedProducts.map((category) => (
+          <section key={category.id} className={styles["home-page-page__featured-section"]} style={{ marginTop: 40 }}>
+            <div className={styles["home-page-page__featured-header"]}>
+              <div>
+                <h2 className={styles["home-page-page__featured-title"]}>
+                  Danh mục: {category.name}
+                </h2>
+                <p className={styles["home-page-page__featured-subtitle"]}>
+                  Top sản phẩm nổi bật thuộc danh mục {category.name}.
+                </p>
+              </div>
+              <button
+                type="button"
+                className={styles["home-page-page__featured-link"]}
+                onClick={() => router.push(`/products?category=${category.slug}`)}
+              >
+                Xem tất cả
+                <MdArrowForward />
+              </button>
+            </div>
+
+            <div className={styles["home-page-page__featured-grid"]}>
+              {category.products.map(renderProductCard)}
+            </div>
+          </section>
+        ))}
 
         {/* Solutions */}
         <section className={styles["home-page-page__solutions-section"]}>
@@ -557,6 +574,7 @@ export default function HomePage() {
                 <button
                   type="button"
                   className={styles["home-page-page__solution-button"]}
+                  onClick={() => router.push('/products?search=xem+phim')}
                 >
                   Khám phá
                 </button>
@@ -579,6 +597,7 @@ export default function HomePage() {
                 <button
                   type="button"
                   className={styles["home-page-page__solution-button"]}
+                  onClick={() => router.push('/products?search=nghe+nhạc')}
                 >
                   Khám phá
                 </button>
@@ -601,6 +620,7 @@ export default function HomePage() {
                 <button
                   type="button"
                   className={styles["home-page-page__solution-button"]}
+                  onClick={() => router.push('/products?search=chuyên+dụng')}
                 >
                   Khám phá
                 </button>

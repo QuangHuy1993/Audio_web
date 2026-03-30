@@ -65,6 +65,9 @@ export async function callGroqChat(
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => null);
+      if (response.status === 429 && errorText) {
+        throw new Error(`GROQ_429:${errorText}`);
+      }
       console.error(`${debugLabel} Groq request failed`, {
         status: response.status,
         statusText: response.statusText,
@@ -91,6 +94,9 @@ export async function callGroqChat(
     return content && content.length > 0 ? content : null;
   } catch (error) {
     clearTimeout(timeoutId);
+    if (error instanceof Error && error.message.startsWith("GROQ_429:")) {
+      throw error;
+    }
     if ((error as Error)?.name === "AbortError") {
       console.error(`${debugLabel} Request timed out after ${timeoutMs}ms`);
     } else {

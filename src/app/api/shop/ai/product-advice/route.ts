@@ -83,6 +83,7 @@ function formatPriceVnd(amount: number): string {
 }
 
 type CatalogItem = {
+  id: string;
   name: string;
   categoryName: string | null;
   brandName: string | null;
@@ -191,7 +192,7 @@ function buildSystemPrompt(
       ? catalog.map((item, idx) => {
           const displayPrice = item.salePrice ?? item.price;
           const parts = [
-            `${idx + 1}. ${item.name}`,
+            `${idx + 1}. [MÃ ID: ${item.id}] ${item.name}`,
             `   Danh mục: ${item.categoryName ?? "Không phân loại"}`,
             `   Thương hiệu: ${item.brandName ?? "Không có"}`,
             `   Giá: ${formatPriceVnd(displayPrice)}${item.salePrice ? " (đang giảm)" : ""}`,
@@ -235,7 +236,8 @@ function buildSystemPrompt(
     "",
     "-- Format --",
     "17. Câu trả lời ngắn gọn, súc tích, tối đa 3-4 đoạn. Cuối câu trả lời thêm một câu hỏi mở nếu phù hợp.",
-    "18. Dùng dòng trống (\\n\\n) để phân cách đoạn. Liệt kê dùng dấu gạch đầu dòng (-). TUYỆT ĐỐI không dùng ký tự markdown: không dùng **, __, ##, [], (link). Chỉ viết text thuần túy và dấu (-) khi liệt kê.",
+    "18. Dùng dòng trống (\\n\\n) để phân cách đoạn. Liệt kê dùng dấu gạch đầu dòng (-). Quy tắc KHÔNG DÙNG MARKDOWN vẫn áp dụng.",
+    "19. QUAN TRỌNG NHẤT: ĐỂ GỢI Ý CỤ THỂ SẢN PHẨM KHUYÊN DÙNG, BẮT BUỘC liệt kê 'Số thứ tự' (SỐ) của sản phẩm đó vào DÒNG CUỐI CÙNG của câu trả lời, theo định dạng: [IDS: 1, 3]. Ví dụ: nếu bạn khuyên dùng [SỐ 1] và [SỐ 4], hãy ghi: [IDS: 1, 4]. TUYỆT ĐỐI không nhắc đến các con số này trong các câu văn bản tư vấn và miêu tả ở trên.",
   ].join("\n");
 }
 
@@ -269,7 +271,7 @@ function buildGeneralSystemPrompt(catalog: CatalogItem[]): string {
       ? catalog.map((item, idx) => {
           const displayPrice = item.salePrice ?? item.price;
           const parts = [
-            `${idx + 1}. ${item.name}`,
+            `${idx + 1}. [MÃ ID: ${item.id}] ${item.name}`,
             `   Danh mục: ${item.categoryName ?? "Không phân loại"}`,
             `   Thương hiệu: ${item.brandName ?? "Không có"}`,
             `   Giá: ${formatPriceVnd(displayPrice)}${item.salePrice ? " (đang giảm)" : ""}`,
@@ -304,8 +306,9 @@ function buildGeneralSystemPrompt(catalog: CatalogItem[]): string {
     "10. Khi được so sánh với AI khác: 'Tôi là Đức Uy AI - trợ lý tư vấn âm thanh riêng của bạn tại Đức Uy Audio. Rất vui được hỗ trợ bạn về thế giới âm thanh.'",
     "",
     "-- Format --",
-    "11. Câu trả lời ngắn gọn, súc tích, tối đa 3-4 đoạn. Cuối câu trả lời thêm một câu hỏi mở nếu phù hợp.",
-    "12. Dùng dòng trống (\\n\\n) để phân cách đoạn. Liệt kê dùng dấu gạch đầu dòng (-). TUYỆT ĐỐI không dùng ký tự markdown: không dùng **, __, ##, [], (link). Chỉ viết text thuần túy và dấu (-) khi liệt kê.",
+    "11. Câu trả lời ngắn gọn, súc tích, tối đa 3-4 đoạn. Cuối câu trả lời thêm một câu hỏi mở.",
+    "12. Dùng dòng trống (\\n\\n) để phân cách. Liệt kê dùng gạch đầu dòng (-). KHÔNG dùng markdown (** hay ##).",
+    "13. QUAN TRỌNG NHẤT: BẮT BUỘC liệt kê 'Số thứ tự' (SỐ) của sản phẩm bạn khuyên dùng vào DÒNG CUỐI CÙNG của câu trả lời, theo định dạng: [IDS: 1, 2]. Ví dụ: nếu khuyên dùng [SỐ 1] và [SỐ 3], hãy ghi: [IDS: 1, 3]. TUYỆT ĐỐI không viết con số này vào các đoạn văn tư vấn.",
   ].join("\n");
 }
 
@@ -404,6 +407,7 @@ export async function POST(request: NextRequest) {
   const catalogSelect = {
     where: { status: "ACTIVE" as const, stock: { gt: 0 } },
     select: {
+      id: true,
       name: true,
       price: true,
       salePrice: true,
@@ -425,11 +429,14 @@ export async function POST(request: NextRequest) {
   let systemPrompt: string;
   let productMeta: { id: string; name: string; brandName: string | null; categoryName: string | null; categoryId: string | null; aiTags: string[] } | null = null;
   let suggestedProducts: SuggestedProductDto[] | undefined;
+  let catalogRaw: any[] = [];
+  let catalog: CatalogItem[] = [];
 
   if (isGeneralMode) {
     // --- Chế độ tư vấn chung: chỉ cần catalog ---
-    const catalogRaw = await prisma.product.findMany(catalogSelect);
-    const catalog: CatalogItem[] = catalogRaw.map((p) => ({
+    catalogRaw = await prisma.product.findMany(catalogSelect);
+    catalog = catalogRaw.map((p) => ({
+      id: p.id,
       name: p.name,
       categoryName: p.category?.name ?? null,
       brandName: p.brand?.name ?? null,
@@ -441,7 +448,7 @@ export async function POST(request: NextRequest) {
     if (customRules) systemPrompt += `\n\n=== QUY TẮC BỔ SUNG (Admin) ===\n${customRules}`;
   } else {
     // --- Chế độ tư vấn theo sản phẩm: fetch song song product + catalog ---
-    const [product, catalogRaw] = await Promise.all([
+    const [product, fetchedCatalogRaw] = await Promise.all([
       prisma.product.findUnique({
         where: { id: productId },
         select: {
@@ -462,6 +469,7 @@ export async function POST(request: NextRequest) {
       }),
       prisma.product.findMany(catalogSelect),
     ]);
+    catalogRaw = fetchedCatalogRaw;
 
     if (!product || product.status !== "ACTIVE") {
       return NextResponse.json(
@@ -470,9 +478,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const catalog: CatalogItem[] = catalogRaw
+    catalog = catalogRaw
       .filter((p) => p.name !== product.name)
       .map((p) => ({
+        id: p.id,
         name: p.name,
         categoryName: p.category?.name ?? null,
         brandName: p.brand?.name ?? null,
@@ -558,15 +567,33 @@ export async function POST(request: NextRequest) {
   ];
 
   // --- Gọi Groq (dùng config từ DB: model, temperature, maxTokens, timeout) ---
-  const rawAnswer = await callGroqChat({
-    apiKey,
-    model,
-    messages: groqMessages,
-    maxTokens: aiConfig.ai_max_tokens,
-    temperature: aiConfig.ai_temperature,
-    timeoutMs: aiConfig.ai_timeout_ms,
-    debugLabel: "[ProductAdvice]",
-  });
+  let rawAnswer: string | null = null;
+  try {
+    rawAnswer = await callGroqChat({
+      apiKey,
+      model,
+      messages: groqMessages,
+      maxTokens: aiConfig.ai_max_tokens,
+      temperature: aiConfig.ai_temperature,
+      timeoutMs: aiConfig.ai_timeout_ms,
+      debugLabel: "[ProductAdvice]",
+    });
+  } catch (error: any) {
+    if (error instanceof Error && error.message.startsWith("GROQ_429:")) {
+      const match = error.message.match(/try again in ([0-9.]+)s/i);
+      if (match) {
+        const secs = Math.ceil(parseFloat(match[1]));
+        return NextResponse.json(
+          { error: `Xin lỗi, tôi đang xử lý quá nhiều yêu cầu lúc này. Vui lòng thử lại sau ${secs} giây.` },
+          { status: 429 }
+        );
+      }
+      return NextResponse.json(
+        { error: "Xin lỗi, tôi gặp sự cố mạng do quá tải. Vui lòng thử lại sau một chút." },
+        { status: 429 }
+      );
+    }
+  }
 
   if (!rawAnswer) {
     return NextResponse.json(
@@ -576,13 +603,87 @@ export async function POST(request: NextRequest) {
   }
 
   // Strip markdown formatting that LLM may still output despite instructions.
-  // Frontend renders plain text (no markdown parser), so ** and __ appear as literal characters.
-  const answer = rawAnswer
+  // Extract and remove [IDS: ...] block safely.
+  let answer = rawAnswer
     .replace(/\*\*(.+?)\*\*/g, "$1")
     .replace(/__(.+?)__/g, "$1")
     .replace(/^#{1,3}\s+/gm, "")
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .trim();
+    // Fallback: strip any literal "ID: XXX" or "(ID: XXX)" the AI might still hallucinate
+    .replace(/\(?ID:\s*[-a-zA-Z0-9_]+\)?/gi, "");
+
+  const idsMatch = answer.match(/\[IDS:\s*([\d,\s]+)\]/i);
+  let aiSuggestedIds: string[] = [];
+  if (idsMatch) {
+    const rawNumbers = idsMatch[1].split(",").map(n => parseInt(n.trim(), 10)).filter(n => !isNaN(n));
+    // Index mapping (prompt uses 1-based indexing: SỐ 1, SỐ 2)
+    aiSuggestedIds = rawNumbers
+      .map(num => catalog[num - 1]?.id)
+      .filter(Boolean);
+      
+    answer = answer.replace(idsMatch[0], "").trim();
+  }
+  answer = answer.trim();
+
+  // --- Parse answer for mentioned products ---
+  if (!suggestedProducts || suggestedProducts.length === 0) {
+    if (aiSuggestedIds.length > 0) {
+      // Use exact IDs provided by AI
+      try {
+        const mentionedFull = await prisma.product.findMany({
+          where: { id: { in: aiSuggestedIds } },
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            price: true,
+            salePrice: true,
+            images: { where: { isPrimary: true }, select: { url: true }, take: 1 },
+          },
+        });
+        suggestedProducts = mentionedFull.map((p) => ({
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          price: Number(p.price),
+          salePrice: p.salePrice != null ? Number(p.salePrice) : null,
+          primaryImageUrl: p.images[0]?.url ?? null,
+        })).slice(0, 3);
+      } catch (error) {
+        console.error("[ProductAdvice] Failed to fetch exact requested products:", error);
+      }
+    } else if (catalogRaw && catalogRaw.length > 0) {
+      // Fallback: fuzzy exact name match (AI forgot to provide IDs)
+      const mentionedProducts = catalogRaw.filter((p) => answer.includes(p.name));
+      
+      if (mentionedProducts.length > 0) {
+        try {
+          const mentionedFull = await prisma.product.findMany({
+            where: { id: { in: mentionedProducts.map((p) => p.id) } },
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              price: true,
+              salePrice: true,
+              images: { where: { isPrimary: true }, select: { url: true }, take: 1 },
+            },
+          });
+          
+          suggestedProducts = mentionedFull.map((p) => ({
+            id: p.id,
+            name: p.name,
+            slug: p.slug,
+            price: Number(p.price),
+            salePrice: p.salePrice != null ? Number(p.salePrice) : null,
+            primaryImageUrl: p.images[0]?.url ?? null,
+          })).slice(0, 3);
+        } catch (error) {
+          console.error("[ProductAdvice] Failed to fetch mentioned products images:", error);
+        }
+      }
+    }
+  }
 
   // --- Fire-and-forget: log AiSession ---
   void createAiSession({

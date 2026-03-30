@@ -20,6 +20,9 @@ export type CreatePaymentSessionRequestDto = {
   discountCouponCode?: string;
   shippingCouponCode?: string;
   note?: string;
+  isBuyNow?: boolean;
+  buyNowProductId?: string;
+  buyNowQuantity?: number;
 };
 
 export type CreatePaymentSessionResponseDto = {

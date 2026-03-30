@@ -149,6 +149,12 @@ function buildOrderRequestFromSession(
     }
     | null;
 
+  const cartSnapshot = (session.cartSnapshot ?? {}) as {
+    isBuyNow?: boolean;
+    buyNowProductId?: string;
+    buyNowQuantity?: number;
+  };
+
   return {
     shippingAddress: {
       fullName: shippingSnapshot.address.fullName,
@@ -166,6 +172,9 @@ function buildOrderRequestFromSession(
     discountCouponCode: couponSnapshot?.discountCouponCode,
     shippingCouponCode: couponSnapshot?.shippingCouponCode,
     note: session.note ?? undefined,
+    isBuyNow: cartSnapshot.isBuyNow,
+    buyNowProductId: cartSnapshot.buyNowProductId,
+    buyNowQuantity: cartSnapshot.buyNowQuantity,
   };
 }
 
@@ -201,47 +210,89 @@ export async function prepareCheckoutSession(
     // We do not reuse existing PENDING sessions anymore to ensure
     // every checkout click uses the most up-to-date cart, coupons, and shipping.
 
-    const cart = await client.cart.findUnique({
-      where: { userId },
-      select: {
-        id: true,
-        status: true,
-        items: {
-          select: {
-            id: true,
-            productId: true,
-            quantity: true,
-            unitPrice: true,
-            product: {
-              select: {
-                id: true,
-                name: true,
-                slug: true,
-                stock: true,
-                status: true,
-                images: {
-                  where: { isPrimary: true },
-                  select: { url: true },
-                  take: 1,
+    let cartItemsData: any[] = [];
+
+    if (dto.isBuyNow && dto.buyNowProductId && dto.buyNowQuantity) {
+      const product = await client.product.findUnique({
+        where: { id: dto.buyNowProductId },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          stock: true,
+          status: true,
+          price: true,
+          salePrice: true,
+          images: {
+            where: { isPrimary: true },
+            select: { url: true },
+            take: 1,
+          },
+        },
+      });
+
+      if (!product) {
+        throw new CheckoutSessionError("PRODUCT_NOT_FOUND", "Sản phẩm không tồn tại.");
+      }
+
+      const price = Number(product.price);
+      const salePrice = product.salePrice ? Number(product.salePrice) : null;
+      const unitPrice = salePrice !== null && salePrice < price ? salePrice : price;
+
+      cartItemsData = [
+        {
+          id: "buy_now_item",
+          productId: product.id,
+          quantity: dto.buyNowQuantity,
+          unitPrice,
+          product,
+        },
+      ];
+    } else {
+      const cart = await client.cart.findUnique({
+        where: { userId },
+        select: {
+          id: true,
+          status: true,
+          items: {
+            select: {
+              id: true,
+              productId: true,
+              quantity: true,
+              unitPrice: true,
+              product: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                  stock: true,
+                  status: true,
+                  images: {
+                    where: { isPrimary: true },
+                    select: { url: true },
+                    take: 1,
+                  },
                 },
               },
             },
           },
         },
-      },
-    });
+      });
 
-    if (!cart || cart.items.length === 0) {
-      throw new CheckoutSessionError(
-        "CART_EMPTY",
-        "Giỏ hàng trống, vui lòng thêm sản phẩm trước khi thanh toán.",
-      );
+      if (!cart || cart.items.length === 0) {
+        throw new CheckoutSessionError(
+          "CART_EMPTY",
+          "Giỏ hàng trống, vui lòng thêm sản phẩm trước khi thanh toán.",
+        );
+      }
+
+      cartItemsData = cart.items;
     }
 
     let subtotal = 0;
     let totalQuantity = 0;
 
-    for (const item of cart.items) {
+    for (const item of cartItemsData) {
       if (!item.product) {
         throw new CheckoutSessionError(
           "PRODUCT_NOT_FOUND",
@@ -424,7 +475,7 @@ export async function prepareCheckoutSession(
     const totalAmount = subtotal - discountCouponAmount + Math.max(shippingFee - shippingCouponDiscount, 0);
 
     const cartSnapshot = {
-      items: cart.items.map((item) => ({
+      items: cartItemsData.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
         unitPrice: Number(item.unitPrice),
@@ -433,6 +484,9 @@ export async function prepareCheckoutSession(
       })),
       subtotal,
       totalQuantity,
+      isBuyNow: dto.isBuyNow,
+      buyNowProductId: dto.buyNowProductId,
+      buyNowQuantity: dto.buyNowQuantity,
     };
 
     const shippingSnapshot = {

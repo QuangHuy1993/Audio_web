@@ -247,9 +247,11 @@ export default function ProductDetailPage({ id }: Props) {
     }
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     if (!product) return;
-    toast.success("Đang chuyển đến trang thanh toán...");
+    if (!ensureAuthenticated()) return;
+
+    router.push(`/checkout?buyNow=${product.id}&qty=${quantity}`);
   };
 
   const handleWishlist = async () => {
