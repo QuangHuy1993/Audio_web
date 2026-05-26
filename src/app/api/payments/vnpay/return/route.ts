@@ -1,23 +1,18 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { verifyVnpaySignature } from "@/lib/vnpay";
+import { commitOrderFromSession } from "@/services/checkout-session-service";
 
 export const runtime = "nodejs";
 
 /**
  * VNPAY Return URL handler (front-channel redirect sau khi user thanh toán xong).
  *
- * Luồng:
- * 1. VNPAY redirect user về URL này kèm các tham số vnp_* (bao gồm vnp_TxnRef, vnp_ResponseCode).
- * 2. Dùng vnp_TxnRef để tra cứu CheckoutSession.
- * 3. Redirect user sang /checkout/processing?sessionId=<id> để polling trạng thái.
- *
- * Lưu ý: Return URL chỉ là front-channel (có thể không chạy nếu user đóng tab).
- * IPN route (/api/payments/vnpay/ipn) là nguồn tin cậy để commit order.
- *
- * QUAN TRỌNG: Dùng NEXTAUTH_URL làm base cho redirect, KHÔNG dùng request.url.
- * Lý do: request.url trong Next.js dev = http://localhost:3000/... → redirect về localhost
- * thay vì ngrok URL → browser bị lỗi HTTPS trên localhost.
+ * Để giải quyết vấn đề không cấu hình được IPN trên portal VNPAY:
+ * - Route này sẽ thực hiện verify chữ ký của các tham số nhận được.
+ * - Nếu hợp lệ và thanh toán thành công (vnp_ResponseCode = 00), tiến hành commit order ngay lập tức.
+ * - Điều này giúp hoàn tất đơn hàng ngay khi user quay lại website mà không cần phụ thuộc IPN.
  */
 
 function getAppBaseUrl(request: NextRequest): string {
@@ -35,6 +30,8 @@ function getAppBaseUrl(request: NextRequest): string {
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const txnRef = url.searchParams.get("vnp_TxnRef");
+  const responseCode = url.searchParams.get("vnp_ResponseCode");
+  const transactionStatus = url.searchParams.get("vnp_TransactionStatus");
   const baseUrl = getAppBaseUrl(request);
 
   if (!txnRef) {
@@ -42,20 +39,54 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const session = await prisma.checkoutSession.findUnique({
+    const session = await prisma.checkoutSession.findFirst({
       where: { providerRef: txnRef },
-      select: { id: true },
     });
 
     if (!session) {
       return NextResponse.redirect(`${baseUrl}/checkout`);
     }
 
+    // 1. Verify signature từ các query parameters
+    const params = Object.fromEntries(url.searchParams.entries());
+    if (verifyVnpaySignature(params)) {
+      const isPaid = responseCode === "00" && (!transactionStatus || transactionStatus === "00");
+
+      if (isPaid) {
+        // Chỉ commit nếu phiên vẫn đang ở trạng thái PENDING
+        if (session.status === "PENDING") {
+          await commitOrderFromSession(session.id);
+          
+          await prisma.checkoutSession.update({
+            where: { id: session.id },
+            data: {
+              providerCode: responseCode ?? undefined,
+              providerPayload: params,
+            },
+          });
+          console.log(`[Payments][VNPAY][Return] Successfully committed order from return fallback for session ${session.id}`);
+        }
+      } else {
+        if (session.status === "PENDING") {
+          await prisma.checkoutSession.update({
+            where: { id: session.id },
+            data: {
+              status: "FAILED",
+              providerCode: responseCode ?? undefined,
+              providerPayload: params,
+            },
+          });
+        }
+      }
+    } else {
+      console.error("[Payments][VNPAY][Return] Invalid signature verification failed");
+    }
+
     return NextResponse.redirect(
       `${baseUrl}/checkout/processing?sessionId=${session.id}`,
     );
   } catch (error) {
-    console.error("[Payments][VNPAY][Return] Error looking up session", error);
+    console.error("[Payments][VNPAY][Return] Error processing return callback", error);
     return NextResponse.redirect(`${baseUrl}/checkout`);
   }
 }
