@@ -237,17 +237,23 @@
    align-items: flex-end;
    justify-content: space-between;
    width: 100%;
+   height: 100%;
    gap: 8px;
    z-index: 1;
  }
 
  .admin-dashboard-page__chart-bar-group {
    flex: 1;
+   height: 100%;
    display: flex;
    flex-direction: column;
    align-items: center;
    justify-content: flex-end;
    gap: 6px;
+ }
+
+ .admin-dashboard-page__chart-bar-group--small {
+   gap: 2px;
  }
 
  .admin-dashboard-page__chart-bar {
@@ -553,4 +559,46 @@
  .admin-dashboard-page__status-pill--cancelled {
    background: rgba(239, 68, 68, 0.1);
    color: #ef4444;
+ }
+
+ .admin-dashboard-page__chart-bar-wrapper {
+   position: relative;
+   width: 100%;
+   max-width: 40px;
+   display: flex;
+   align-items: flex-end;
+   justify-content: center;
+ }
+
+ .admin-dashboard-page__chart-bar {
+   width: 100% !important;
+   height: 100% !important;
+ }
+
+ .admin-dashboard-page__chart-tooltip {
+   position: absolute;
+   bottom: calc(100% + 8px);
+   left: 50%;
+   transform: translateX(-50%);
+   background: rgba(25, 20, 20, 0.9);
+   color: #ffffff;
+   padding: 6px 10px;
+   border-radius: 6px;
+   font-size: 11px;
+   font-weight: 600;
+   white-space: nowrap;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+   z-index: 10;
+   pointer-events: none;
+ }
+
+ .admin-dashboard-page__chart-tooltip::after {
+   content: "";
+   position: absolute;
+   top: 100%;
+   left: 50%;
+   transform: translateX(-50%);
+   border-width: 5px;
+   border-style: solid;
+   border-color: rgba(25, 20, 20, 0.9) transparent transparent transparent;
  }

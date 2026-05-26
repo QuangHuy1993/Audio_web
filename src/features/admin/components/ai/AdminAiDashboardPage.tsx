@@ -252,18 +252,18 @@ const AdminAiDashboardPage: React.FC = () => {
 
             <div className={styles["admin-ai-dashboard-page__chart-card"]}>
               <h3 className={styles["admin-ai-dashboard-page__chart-title"]}>Phân bổ loại phiên AI</h3>
-              <ResponsiveContainer width="100%" height={200}>
+              <ResponsiveContainer width="100%" height={240}>
                 <PieChart>
                   <Pie
                     data={pieData}
                     cx="50%"
                     cy="50%"
-                    outerRadius={80}
+                    outerRadius={70}
                     dataKey="value"
                     label={({ name, percent }: { name?: string; percent?: number }) =>
                       (percent ?? 0) > 0 ? `${TYPE_LABELS[name ?? ""] ?? name} ${Math.round((percent ?? 0) * 100)}%` : ""
                     }
-                    labelLine={false}
+                    labelLine={true}
                   >
                     {pieData.map((_, idx) => (
                       <Cell key={idx} fill={PIE_COLORS[idx % PIE_COLORS.length]} />

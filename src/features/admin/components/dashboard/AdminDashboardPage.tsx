@@ -56,6 +56,7 @@ const formatStatus = (status: string) => {
 const AdminDashboardPage: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTooltipIndex, setActiveTooltipIndex] = useState<number | null>(null);
 
   const fetchStats = async () => {
     setIsLoading(true);
@@ -227,12 +228,26 @@ const AdminDashboardPage: React.FC = () => {
                   const dateLabel = new Date(day.date).toLocaleDateString('vi-VN', { weekday: 'short' });
 
                   return (
-                    <div key={day.date} className={styles["admin-dashboard-page__chart-bar-group"]}>
-                      <div
-                        className={styles["admin-dashboard-page__chart-bar"]}
+                    <div 
+                      key={day.date} 
+                      className={styles["admin-dashboard-page__chart-bar-group"]}
+                      onMouseEnter={() => setActiveTooltipIndex(idx)}
+                      onMouseLeave={() => setActiveTooltipIndex(null)}
+                    >
+                      <div 
+                        className={styles["admin-dashboard-page__chart-bar-wrapper"]} 
                         style={{ height: `${height}%` }}
-                        title={formatPrice(day.amount)}
-                      />
+                      >
+                        {activeTooltipIndex === idx && (
+                          <div className={styles["admin-dashboard-page__chart-tooltip"]}>
+                            {formatPrice(day.amount)}
+                          </div>
+                        )}
+                        <div
+                          className={styles["admin-dashboard-page__chart-bar"]}
+                          title={formatPrice(day.amount)}
+                        />
+                      </div>
                       <span className={styles["admin-dashboard-page__chart-label"]}>{dateLabel}</span>
                     </div>
                   );

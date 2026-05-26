@@ -62,9 +62,7 @@ export async function GET() {
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
         sevenDaysAgo.setHours(0, 0, 0, 0);
 
-        const dailyRevenue = await prisma.order.groupBy({
-            by: ["createdAt"],
-            _sum: { totalAmount: true },
+        const dailyRevenue = await prisma.order.findMany({
             where: {
                 status: {
                     in: [OrderStatus.PAID, OrderStatus.SHIPPED, OrderStatus.COMPLETED],
@@ -73,24 +71,29 @@ export async function GET() {
                     gte: sevenDaysAgo,
                 },
             },
-            orderBy: {
-                createdAt: "asc",
+            select: {
+                totalAmount: true,
+                createdAt: true,
             },
         });
 
-        // Gom nhóm dữ liệu theo ngày (vì createdAt có cả giờ phút giây)
+        // Gom nhóm dữ liệu theo ngày ở múi giờ Việt Nam (GMT+7)
         const revenueByDayMap: Record<string, number> = {};
         // Khởi tạo 7 ngày với giá trị 0
         for (let i = 0; i < 7; i++) {
             const d = new Date(sevenDaysAgo);
             d.setDate(d.getDate() + i);
-            revenueByDayMap[d.toISOString().split("T")[0]] = 0;
+            // Convert sang múi giờ GMT+7 để lấy đúng ngày local yyyy-MM-dd
+            const gmt7Time = new Date(d.getTime() + 7 * 60 * 60 * 1000);
+            const dateStr = gmt7Time.toISOString().split("T")[0];
+            revenueByDayMap[dateStr] = 0;
         }
 
         dailyRevenue.forEach((item) => {
-            const dateStr = item.createdAt.toISOString().split("T")[0];
+            const gmt7Time = new Date(item.createdAt.getTime() + 7 * 60 * 60 * 1000);
+            const dateStr = gmt7Time.toISOString().split("T")[0];
             if (revenueByDayMap[dateStr] !== undefined) {
-                revenueByDayMap[dateStr] += Number(item._sum.totalAmount || 0);
+                revenueByDayMap[dateStr] += Number(item.totalAmount || 0);
             }
         });
 
