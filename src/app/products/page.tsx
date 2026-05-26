@@ -42,6 +42,15 @@ import styles from "./page.module.css";
 
 type SortOption = "newest" | "price_asc" | "price_desc" | "name_asc";
 
+type AiRecommendedProduct = {
+  id: string;
+  name: string;
+  price: number;
+  salePrice?: number | null;
+  brandName?: string | null;
+  imageUrl?: string | null;
+};
+
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: "newest", label: "Mới nhất" },
   { value: "price_asc", label: "Giá tăng dần" },
@@ -88,6 +97,10 @@ function ProductsPage() {
   const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
   const [minPrice, setMinPrice] = useState<number | null>(null);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const [draftMinPrice, setDraftMinPrice] = useState<number | null>(null);
+  const [draftMaxPrice, setDraftMaxPrice] = useState<number | null>(null);
+  const [draftCategoryId, setDraftCategoryId] = useState<string | null>(null);
+  const [draftBrandId, setDraftBrandId] = useState<string | null>(null);
   const [wishedProductIds, setWishedProductIds] = useState<Set<string>>(new Set());
   const [togglingIds, setTogglingIds] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState<string>(
@@ -105,7 +118,7 @@ function ProductsPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [recommendation, setRecommendation] = useState<{
     expertVerdict: string;
-    recommendedProducts: any[];
+    recommendedProducts: AiRecommendedProduct[];
   } | null>(null);
 
   const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -163,6 +176,8 @@ function ProductsPage() {
       brandId: string | null,
       onSale: boolean,
       promotionId: string | null,
+      min: number | null,
+      max: number | null,
     ) => {
       setIsLoading(true);
       setError(null);
@@ -177,6 +192,8 @@ function ProductsPage() {
         if (brandId) params.set("brandId", brandId);
         if (onSale) params.set("onSale", "true");
         if (promotionId) params.set("promotionId", promotionId);
+        if (min != null) params.set("minPrice", String(min));
+        if (max != null) params.set("maxPrice", String(max));
 
         const res = await fetch(`/api/shop/products?${params.toString()}`);
         if (!res.ok) throw new Error("Không thể tải danh sách sản phẩm.");
@@ -204,6 +221,8 @@ function ProductsPage() {
         activeBrandId,
         onSaleOnly,
         activePromotionId,
+        minPrice,
+        maxPrice,
       );
     const timer = fetchTimerRef.current;
     return () => {
@@ -218,6 +237,8 @@ function ProductsPage() {
     onSaleOnly,
     activePromotionId,
     searchTerm,
+    minPrice,
+    maxPrice,
   ]);
 
   // Bulk check wishlist cho danh sách sản phẩm hiện tại
@@ -475,7 +496,13 @@ function ProductsPage() {
                 <button
                   type="button"
                   className={styles["products-page-page__advanced-filter-button"]}
-                  onClick={() => setIsAdvancedFilterOpen(true)}
+                  onClick={() => {
+                    setDraftMinPrice(minPrice);
+                    setDraftMaxPrice(maxPrice);
+                    setDraftCategoryId(activeCategoryId);
+                    setDraftBrandId(activeBrandId);
+                    setIsAdvancedFilterOpen(true);
+                  }}
                 >
                   <span
                     className={
@@ -673,6 +700,8 @@ function ProductsPage() {
                         activeBrandId,
                         onSaleOnly,
                         activePromotionId,
+                        minPrice,
+                        maxPrice,
                       )
                     }
                   >
@@ -1180,15 +1209,15 @@ function ProductsPage() {
                   <input 
                     type="number" 
                     placeholder="Từ" 
-                    value={minPrice ?? ""} 
-                    onChange={(e) => setMinPrice(e.target.value ? Number(e.target.value) : null)}
+                    value={draftMinPrice ?? ""} 
+                    onChange={(e) => setDraftMinPrice(e.target.value ? Number(e.target.value) : null)}
                   />
                   <span>-</span>
                   <input 
                     type="number" 
                     placeholder="Đến" 
-                    value={maxPrice ?? ""} 
-                    onChange={(e) => setMaxPrice(e.target.value ? Number(e.target.value) : null)}
+                    value={draftMaxPrice ?? ""} 
+                    onChange={(e) => setDraftMaxPrice(e.target.value ? Number(e.target.value) : null)}
                   />
                 </div>
               </div>
@@ -1199,8 +1228,8 @@ function ProductsPage() {
                   {categories.map((cat) => (
                     <button
                       key={cat.id}
-                      className={`${styles["products-page-page__modal-brand-tag"]} ${activeCategoryId === cat.id ? styles["products-page-page__modal-brand-tag--active"] : ""}`}
-                      onClick={() => setActiveCategoryId(cat.id === activeCategoryId ? null : cat.id)}
+                      className={`${styles["products-page-page__modal-brand-tag"]} ${draftCategoryId === cat.id ? styles["products-page-page__modal-brand-tag--active"] : ""}`}
+                      onClick={() => setDraftCategoryId(cat.id === draftCategoryId ? null : cat.id)}
                     >
                       {cat.name} ({cat.productCount})
                     </button>
@@ -1214,8 +1243,8 @@ function ProductsPage() {
                   {brands.map((brand) => (
                     <button
                       key={brand.id}
-                      className={`${styles["products-page-page__modal-brand-tag"]} ${activeBrandId === brand.id ? styles["products-page-page__modal-brand-tag--active"] : ""}`}
-                      onClick={() => setActiveBrandId(brand.id === activeBrandId ? null : brand.id)}
+                      className={`${styles["products-page-page__modal-brand-tag"]} ${draftBrandId === brand.id ? styles["products-page-page__modal-brand-tag--active"] : ""}`}
+                      onClick={() => setDraftBrandId(brand.id === draftBrandId ? null : brand.id)}
                     >
                       {brand.name}
                     </button>
@@ -1228,9 +1257,10 @@ function ProductsPage() {
               <button 
                 className={styles["products-page-page__modal-reset"]}
                 onClick={() => {
-                  setMinPrice(null);
-                  setMaxPrice(null);
-                  setActiveBrandId(null);
+                  setDraftMinPrice(null);
+                  setDraftMaxPrice(null);
+                  setDraftCategoryId(null);
+                  setDraftBrandId(null);
                 }}
               >
                 Thiết lập lại
@@ -1238,6 +1268,10 @@ function ProductsPage() {
               <button 
                 className={styles["products-page-page__modal-apply"]}
                 onClick={() => {
+                  setMinPrice(draftMinPrice);
+                  setMaxPrice(draftMaxPrice);
+                  setActiveCategoryId(draftCategoryId);
+                  setActiveBrandId(draftBrandId);
                   setCurrentPage(1);
                   setIsAdvancedFilterOpen(false);
                 }}

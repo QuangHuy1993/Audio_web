@@ -8,6 +8,8 @@
  *   - categoryId  (optional)
  *   - brandId     (optional)
  *   - onSale      (optional, \"true\" để lọc sản phẩm đang giảm giá)
+ *   - minPrice    (optional, lọc giá bán hiệu lực từ)
+ *   - maxPrice    (optional, lọc giá bán hiệu lực đến)
  *   - sort        "newest" | "price_asc" | "price_desc" | "name_asc" (default "newest")
  *
  * Mỗi trang 9 sản phẩm. Chỉ trả về các trường cần thiết cho ProductCard.
@@ -49,6 +51,8 @@ export async function GET(request: NextRequest) {
   const categoryId = searchParams.get("categoryId")?.trim() ?? "";
   const brandId = searchParams.get("brandId")?.trim() ?? "";
   const onSaleParam = searchParams.get("onSale");
+  const minPriceParam = searchParams.get("minPrice");
+  const maxPriceParam = searchParams.get("maxPrice");
   const sortParam = (searchParams.get("sort") ?? "newest") as SortOption;
 
   const page = Math.max(Number(pageParam ?? "1") || 1, 1);
@@ -59,16 +63,23 @@ export async function GET(request: NextRequest) {
     : "newest";
 
   const onSale = onSaleParam === "true";
+  const minPrice = minPriceParam ? Number(minPriceParam) : null;
+  const maxPrice = maxPriceParam ? Number(maxPriceParam) : null;
+  const hasMinPrice = minPrice != null && Number.isFinite(minPrice) && minPrice >= 0;
+  const hasMaxPrice = maxPrice != null && Number.isFinite(maxPrice) && maxPrice >= 0;
 
   const where: Prisma.ProductWhereInput = {
     status: "ACTIVE",
   };
+  const andConditions: Prisma.ProductWhereInput[] = [];
 
   if (search) {
-    where.OR = [
-      { name: { contains: search, mode: "insensitive" } },
-      { brand: { name: { contains: search, mode: "insensitive" } } },
-    ];
+    andConditions.push({
+      OR: [
+        { name: { contains: search, mode: "insensitive" } },
+        { brand: { name: { contains: search, mode: "insensitive" } } },
+      ],
+    });
   }
 
   if (categoryId) {
@@ -83,6 +94,34 @@ export async function GET(request: NextRequest) {
     where.salePrice = {
       not: null,
     };
+  }
+
+  if (hasMinPrice || hasMaxPrice) {
+    const lowerBound = hasMinPrice ? new Prisma.Decimal(minPrice!) : null;
+    const upperBound = hasMaxPrice ? new Prisma.Decimal(maxPrice!) : null;
+    const priceRange: Prisma.DecimalFilter = {};
+    if (lowerBound) priceRange.gte = lowerBound;
+    if (upperBound) priceRange.lte = upperBound;
+
+    const salePriceRange: Prisma.DecimalNullableFilter = {};
+    if (lowerBound) salePriceRange.gte = lowerBound;
+    if (upperBound) salePriceRange.lte = upperBound;
+
+    andConditions.push({
+      OR: [
+        {
+          salePrice: salePriceRange,
+        },
+        {
+          salePrice: null,
+          price: priceRange,
+        },
+      ],
+    });
+  }
+
+  if (andConditions.length > 0) {
+    where.AND = andConditions;
   }
 
   const [rawProducts, total] = await Promise.all([

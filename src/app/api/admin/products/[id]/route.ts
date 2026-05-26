@@ -16,6 +16,13 @@ export const runtime = "nodejs";
 
 const CLOUDINARY_PRODUCTS_FOLDER = "audio-ai/products";
 
+type PendingImageUpload = {
+  buffer: Buffer;
+  fileName: string;
+  isPrimary: boolean;
+  sortOrder: number;
+};
+
 type UpdateProductBody = {
   name?: string;
   slug?: string;
@@ -389,7 +396,7 @@ export async function GET(
 /**
  * Cập nhật sản phẩm theo id.
  * - Content-Type: application/json -> chỉ cập nhật thông tin, không đẩy ảnh lên Cloudinary.
- * - Content-Type: multipart/form-data (có field "images") -> cập nhật thông tin + upload ảnh mới bất đồng bộ (không block response).
+ * - Content-Type: multipart/form-data (có field "images") -> cập nhật thông tin và đưa ảnh mới lên Cloudinary ở nền.
  */
 export async function PATCH(
   request: NextRequest,
@@ -558,34 +565,31 @@ export async function PATCH(
       : null;
 
   try {
-    const [existing, existingImagesCount] = await Promise.all([
-      prisma.product.findUnique({
-        where: { id },
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          description: true,
-          price: true,
-          salePrice: true,
-          currency: true,
-          stock: true,
-          status: true,
-          brandId: true,
-          categoryId: true,
-          seoTitle: true,
-          seoDescription: true,
-          aiDescription: true,
-          aiTags: true,
-          images: {
-            select: { sortOrder: true },
-            orderBy: { sortOrder: "desc" },
-            take: 1,
-          },
+    const existing = await prisma.product.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        description: true,
+        price: true,
+        salePrice: true,
+        currency: true,
+        stock: true,
+        status: true,
+        brandId: true,
+        categoryId: true,
+        seoTitle: true,
+        seoDescription: true,
+        aiDescription: true,
+        aiTags: true,
+        images: {
+          select: { sortOrder: true },
+          orderBy: { sortOrder: "desc" },
+          take: 1,
         },
-      }),
-      prisma.productImage.count({ where: { productId: id } }),
-    ]);
+      },
+    });
 
     if (!existing) {
       return NextResponse.json(
@@ -711,11 +715,18 @@ export async function PATCH(
     ];
 
     if (newImagesToUpload.length > 0) {
-      (async () => {
+      const pendingUploads: PendingImageUpload[] = await Promise.all(
+        newImagesToUpload.map(async ({ file, isPrimary, sortOrder }) => ({
+          buffer: Buffer.from(await file.arrayBuffer()),
+          fileName: file.name,
+          isPrimary,
+          sortOrder,
+        })),
+      );
+
+      void (async () => {
         try {
-          for (const { file, isPrimary, sortOrder } of newImagesToUpload) {
-            const arrayBuffer = await file.arrayBuffer();
-            const buffer = Buffer.from(arrayBuffer);
+          for (const { buffer, fileName, isPrimary, sortOrder } of pendingUploads) {
             const result = await uploadImage(buffer, {
               folder: CLOUDINARY_PRODUCTS_FOLDER,
             });
@@ -724,17 +735,14 @@ export async function PATCH(
               data: {
                 productId: id,
                 url: result.secureUrl,
-                alt: file.name || null,
+                alt: fileName || null,
                 isPrimary,
                 sortOrder,
               },
             });
           }
         } catch (e) {
-          console.error(
-            "[PATCH /api/admin/products/[id]] Background product images upload failed:",
-            e,
-          );
+          console.error("[PATCH /api/admin/products/[id]] Background product images upload failed:", e);
         }
       })();
     }
@@ -768,7 +776,10 @@ export async function PATCH(
       })();
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      imageUploadStatus: newImagesToUpload.length > 0 ? "pending" : "none",
+    });
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -796,4 +807,3 @@ export async function PATCH(
     );
   }
 }
-

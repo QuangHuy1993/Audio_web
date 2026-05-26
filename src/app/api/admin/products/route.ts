@@ -40,6 +40,13 @@ type CreateProductBody = {
 
 const CLOUDINARY_PRODUCTS_FOLDER = "audio-ai/products";
 
+type PendingImageUpload = {
+  buffer: Buffer;
+  fileName: string;
+  isPrimary: boolean;
+  sortOrder: number;
+};
+
 function parseProductFormBody(form: FormData): {
   name: string;
   slug: string;
@@ -547,12 +554,19 @@ export async function POST(request: NextRequest) {
 
     if (imagesToUpload.length > 0) {
       const productId = created.id;
-      (async () => {
+      const pendingUploads: PendingImageUpload[] = await Promise.all(
+        imagesToUpload.map(async ({ file, isPrimary, sortOrder }) => ({
+          buffer: Buffer.from(await file.arrayBuffer()),
+          fileName: file.name,
+          isPrimary,
+          sortOrder,
+        })),
+      );
+
+      void (async () => {
         try {
           await Promise.all(
-            imagesToUpload.map(async ({ file, isPrimary, sortOrder }) => {
-              const arrayBuffer = await file.arrayBuffer();
-              const buffer = Buffer.from(arrayBuffer);
+            pendingUploads.map(async ({ buffer, fileName, isPrimary, sortOrder }) => {
               const result = await uploadImage(buffer, {
                 folder: CLOUDINARY_PRODUCTS_FOLDER,
               });
@@ -561,7 +575,7 @@ export async function POST(request: NextRequest) {
                 data: {
                   productId,
                   url: result.secureUrl,
-                  alt: file.name || null,
+                  alt: fileName || null,
                   isPrimary,
                   sortOrder,
                 },
@@ -569,10 +583,7 @@ export async function POST(request: NextRequest) {
             }),
           );
         } catch (e) {
-          console.error(
-            "[POST /api/admin/products] Background product images upload failed:",
-            e,
-          );
+          console.error("[POST /api/admin/products] Background product images upload failed:", e);
         }
       })();
     }
@@ -586,6 +597,7 @@ export async function POST(request: NextRequest) {
             created.salePrice != null ? Number(created.salePrice) : null,
           createdAt: created.createdAt.toISOString(),
         },
+        imageUploadStatus: imagesToUpload.length > 0 ? "pending" : "none",
       },
       { status: 201 },
     );
@@ -607,4 +619,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

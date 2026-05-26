@@ -707,14 +707,17 @@ const AdminProductEditPage: React.FC = () => {
         });
       }
 
-      const json = (await response.json()) as { error?: string };
+      const json = (await response.json()) as {
+        error?: string;
+        imageUploadStatus?: "pending" | "none";
+      };
       if (!response.ok) {
         toast.error(json.error ?? "Không thể cập nhật sản phẩm.");
         return;
       }
 
       toast.success(
-        hasNewImages
+        json.imageUploadStatus === "pending"
           ? "Đã lưu thông tin. Ảnh mới đang được tải lên ở nền."
           : "Đã lưu thông tin sản phẩm.",
       );
@@ -1784,4 +1787,3 @@ const AdminProductEditPage: React.FC = () => {
 };
 
 export default AdminProductEditPage;
-

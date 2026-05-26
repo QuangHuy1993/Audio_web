@@ -91,14 +91,14 @@ const CheckoutPaymentSection: React.FC<CheckoutPaymentSectionProps> = ({
               <MdCreditCard aria-hidden="true" />
             </span>
             <span className={styles["checkout-payment__method-text"]}>
-              Ví VNPAY / Thẻ ATM Nội địa
+              Thanh toán thẻ / Ví VNPAY
             </span>
           </label>
           {value === "VNPAY" && (
             <div className={styles["checkout-payment__detail"]}>
               <p className={styles["checkout-payment__note"]}>
-                Giảm thêm 50k khi thanh toán qua ví VNPAY. Hệ thống sẽ chuyển hướng đến
-                trang thanh toán an toàn.
+                Hỗ trợ thẻ ATM nội địa, QR Pay và ví VNPAY. Hệ thống sẽ chuyển hướng
+                đến cổng thanh toán an toàn.
               </p>
             </div>
           )}
@@ -127,10 +127,18 @@ const CheckoutPaymentSection: React.FC<CheckoutPaymentSectionProps> = ({
               <MdQrCode2 aria-hidden="true" />
             </span>
             <span className={styles["checkout-payment__method-text"]}>
-              Chuyển khoản VietQR
+              Chuyển khoản ngân hàng VietQR
             </span>
             <span className={styles["checkout-payment__badge"]}>KHUYÊN DÙNG</span>
           </label>
+          {value === "QR_TRANSFER" && (
+            <div className={styles["checkout-payment__detail"]}>
+              <p className={styles["checkout-payment__note"]}>
+                Website tạo mã QR và nội dung chuyển khoản riêng cho đơn hàng. Đơn sẽ
+                tự xác nhận khi webhook ngân hàng ghi nhận giao dịch.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -138,4 +146,3 @@ const CheckoutPaymentSection: React.FC<CheckoutPaymentSectionProps> = ({
 };
 
 export default CheckoutPaymentSection;
-

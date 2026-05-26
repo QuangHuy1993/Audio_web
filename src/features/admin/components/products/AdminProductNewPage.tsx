@@ -459,13 +459,20 @@ const AdminProductNewPage: React.FC = () => {
         });
       }
 
-      const json = (await response.json()) as { error?: string };
+      const json = (await response.json()) as {
+        error?: string;
+        imageUploadStatus?: "pending" | "none";
+      };
       if (!response.ok) {
         toast.error(json.error ?? "Không thể tạo sản phẩm mới.");
         return;
       }
 
-      toast.success("Tạo sản phẩm mới thành công.");
+      toast.success(
+        json.imageUploadStatus === "pending"
+          ? "Đã tạo sản phẩm. Ảnh đang được tải lên ở nền."
+          : "Tạo sản phẩm mới thành công.",
+      );
       router.push("/admin/products");
     } catch {
       toast.error("Có lỗi xảy ra. Vui lòng thử lại.");
@@ -1145,4 +1152,3 @@ const AdminProductNewPage: React.FC = () => {
 };
 
 export default AdminProductNewPage;
-

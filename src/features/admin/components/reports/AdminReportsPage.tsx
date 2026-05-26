@@ -11,8 +11,6 @@ import {
     MdStars,
 } from "react-icons/md";
 import {
-    LineChart,
-    Line,
     BarChart,
     Bar,
     XAxis,
@@ -23,6 +21,9 @@ import {
     ResponsiveContainer,
     AreaChart,
     Area,
+    PieChart,
+    Pie,
+    Cell,
 } from "recharts";
 import { toast } from "sonner";
 import * as XLSX from "xlsx";
@@ -31,15 +32,30 @@ import styles from "./AdminReportsPage.module.css";
 type ReportStats = {
     revenueChartData: { month: string; amount: number }[];
     topProducts: { name: string; quantity: number; orderCount: number }[];
-    customersChartData: { month: string; count: number }[];
+    categoryRevenueData: { name: string; value: number }[];
+    paymentMethodData: { name: string; value: number }[];
     topCustomers: {
         name: string;
-        email: string;
-        image?: string;
+        email: string | null;
+        image?: string | null;
         totalSpend: number;
         orderCount: number;
     }[];
+    paymentTransactions: {
+        id: string;
+        orderNumber: string;
+        customerName: string;
+        customerEmail: string | null;
+        paymentMethod: string;
+        totalAmount: number;
+        createdAt: string;
+    }[];
 };
+
+type ReportPeriod = "day" | "month" | "quarter" | "year";
+type ReportTab = "overview" | "transactions";
+
+const PIE_COLORS = ["#1DB954", "#FFD700", "#2196F3", "#FF9800", "#8B5CF6"];
 
 const formatPrice = (amount: number) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -48,14 +64,33 @@ const formatPrice = (amount: number) => {
     }).format(amount);
 };
 
+const formatCurrencyTooltip = (value: unknown): [string, string] => [
+    formatPrice(Number(value)),
+    "Doanh thu",
+];
+
 const AdminReportsPage: React.FC = () => {
     const [stats, setStats] = useState<ReportStats | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState<ReportTab>("overview");
+    const [period, setPeriod] = useState<ReportPeriod>("month");
+    const [fromDate, setFromDate] = useState(() => {
+        const d = new Date();
+        d.setMonth(d.getMonth() - 11);
+        d.setDate(1);
+        return d.toISOString().slice(0, 10);
+    });
+    const [toDate, setToDate] = useState(() => new Date().toISOString().slice(0, 10));
 
     const fetchStats = async () => {
         setIsLoading(true);
         try {
-            const res = await fetch("/api/admin/reports/stats");
+            const params = new URLSearchParams({
+                from: fromDate,
+                to: toDate,
+                period,
+            });
+            const res = await fetch(`/api/admin/reports/stats?${params.toString()}`);
             if (!res.ok) throw new Error("Không thể tải dữ liệu báo cáo");
             const data = await res.json();
             setStats(data);
@@ -100,6 +135,17 @@ const AdminReportsPage: React.FC = () => {
             const wsCustomers = XLSX.utils.json_to_sheet(customerData);
             XLSX.utils.book_append_sheet(wb, wsCustomers, "Khách hàng VIP");
 
+            const transactionData = stats.paymentTransactions.map((tx) => ({
+                "Mã đơn": tx.orderNumber,
+                "Khách hàng": tx.customerName,
+                "Email": tx.customerEmail,
+                "Phương thức": tx.paymentMethod,
+                "Số tiền (VND)": tx.totalAmount,
+                "Thời gian": new Date(tx.createdAt).toLocaleString("vi-VN"),
+            }));
+            const wsTransactions = XLSX.utils.json_to_sheet(transactionData);
+            XLSX.utils.book_append_sheet(wb, wsTransactions, "Giao dịch");
+
             // Xuất file với tên có ngày tháng
             const dateStr = new Date().toISOString().split('T')[0];
             XLSX.writeFile(wb, `Bao_cao_AudioAI_Shop_${dateStr}.xlsx`);
@@ -112,7 +158,7 @@ const AdminReportsPage: React.FC = () => {
 
     useEffect(() => {
         fetchStats();
-    }, []);
+    }, [period, fromDate, toDate]);
 
     if (isLoading || !stats) {
         return (
@@ -137,6 +183,23 @@ const AdminReportsPage: React.FC = () => {
                     </p>
                 </div>
                 <div className={styles["admin-reports-page__header-actions"]}>
+                    <label className={styles["admin-reports-page__filter-field"]}>
+                        <span>Từ ngày</span>
+                        <input type="date" value={fromDate} onChange={(event) => setFromDate(event.target.value)} />
+                    </label>
+                    <label className={styles["admin-reports-page__filter-field"]}>
+                        <span>Đến ngày</span>
+                        <input type="date" value={toDate} onChange={(event) => setToDate(event.target.value)} />
+                    </label>
+                    <label className={styles["admin-reports-page__filter-field"]}>
+                        <span>Nhóm theo</span>
+                        <select value={period} onChange={(event) => setPeriod(event.target.value as ReportPeriod)}>
+                            <option value="day">Ngày</option>
+                            <option value="month">Tháng</option>
+                            <option value="quarter">Quý</option>
+                            <option value="year">Năm</option>
+                        </select>
+                    </label>
                     <button onClick={fetchStats} className={styles["admin-reports-page__action-button"]}>
                         <MdRefresh /> Làm mới
                     </button>
@@ -149,7 +212,30 @@ const AdminReportsPage: React.FC = () => {
                 </div>
             </header>
 
+            <div className={styles["admin-reports-page__tabs"]}>
+                <button
+                    type="button"
+                    className={`${styles["admin-reports-page__tab"]} ${
+                        activeTab === "overview" ? styles["admin-reports-page__tab--active"] : ""
+                    }`}
+                    onClick={() => setActiveTab("overview")}
+                >
+                    Tổng quan biểu đồ
+                </button>
+                <button
+                    type="button"
+                    className={`${styles["admin-reports-page__tab"]} ${
+                        activeTab === "transactions" ? styles["admin-reports-page__tab--active"] : ""
+                    }`}
+                    onClick={() => setActiveTab("transactions")}
+                >
+                    Giao dịch thanh toán
+                </button>
+            </div>
+
             <div className={styles["admin-reports-page__content"]}>
+                {activeTab === "overview" ? (
+                <>
                 {/* Doanh thu theo tháng */}
                 <section className={styles["admin-reports-page__section"]}>
                     <div className={styles["admin-reports-page__section-header"]}>
@@ -180,7 +266,7 @@ const AdminReportsPage: React.FC = () => {
                                     tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`}
                                 />
                                 <Tooltip
-                                    formatter={(value: any) => [formatPrice(Number(value)), "Doanh thu"]}
+                                    formatter={formatCurrencyTooltip}
                                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: 'var(--shadow-lg)' }}
                                 />
                                 <Area
@@ -197,25 +283,35 @@ const AdminReportsPage: React.FC = () => {
                 </section>
 
                 <div className={styles["admin-reports-page__grid"]}>
-                    {/* Khách hàng mới */}
+                    {/* Cơ cấu doanh thu theo hình thức thanh toán */}
                     <section className={styles["admin-reports-page__section"]}>
                         <div className={styles["admin-reports-page__section-header"]}>
                             <h2 className={styles["admin-reports-page__section-title"]}>
-                                <MdGroup /> Khách hàng mới
+                                <MdGroup /> Cơ cấu thanh toán
                             </h2>
                         </div>
                         <div className={styles["admin-reports-page__chart-container"]}>
                             <ResponsiveContainer width="100%" height={300}>
-                                <BarChart data={stats.customersChartData}>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border-color)" />
-                                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 11 }} />
-                                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11 }} />
+                                <PieChart>
+                                    <Pie
+                                        data={stats.paymentMethodData}
+                                        dataKey="value"
+                                        nameKey="name"
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={105}
+                                        label={({ name }) => name}
+                                    >
+                                        {stats.paymentMethodData.map((_, index) => (
+                                            <Cell key={index} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                                        ))}
+                                    </Pie>
                                     <Tooltip
-                                        cursor={{ fill: 'var(--overlay-primary)' }}
+                                        formatter={formatCurrencyTooltip}
                                         contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: 'var(--shadow-lg)' }}
                                     />
-                                    <Bar dataKey="count" fill="var(--primary)" radius={[4, 4, 0, 0]} barSize={30} />
-                                </BarChart>
+                                    <Legend />
+                                </PieChart>
                             </ResponsiveContainer>
                         </div>
                     </section>
@@ -224,31 +320,52 @@ const AdminReportsPage: React.FC = () => {
                     <section className={styles["admin-reports-page__section"]}>
                         <div className={styles["admin-reports-page__section-header"]}>
                             <h2 className={styles["admin-reports-page__section-title"]}>
-                                <MdInventory /> Top 10 sản phẩm bán chạy
+                                <MdInventory /> Top 5 sản phẩm bán chạy
                             </h2>
                         </div>
-                        <div className={styles["admin-reports-page__table-wrapper"]}>
-                            <table className={styles["admin-reports-page__table"]}>
-                                <thead>
-                                    <tr>
-                                        <th>Sản phẩm</th>
-                                        <th style={{ textAlign: 'center' }}>Số lượng</th>
-                                        <th style={{ textAlign: 'right' }}>Lượt mua</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {stats.topProducts.map((p, idx) => (
-                                        <tr key={idx}>
-                                            <td className={styles["admin-reports-page__product-name"]}>{p.name}</td>
-                                            <td style={{ textAlign: 'center' }}>{p.quantity}</td>
-                                            <td style={{ textAlign: 'right' }}>{p.orderCount}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                        <div className={styles["admin-reports-page__chart-container"]}>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <BarChart data={stats.topProducts}>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border-color)" />
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11 }} />
+                                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11 }} />
+                                    <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: 'var(--shadow-lg)' }} />
+                                    <Bar dataKey="quantity" name="Số lượng bán" fill="var(--primary)" radius={[4, 4, 0, 0]} barSize={30} />
+                                </BarChart>
+                            </ResponsiveContainer>
                         </div>
                     </section>
                 </div>
+
+                <section className={styles["admin-reports-page__section"]}>
+                    <div className={styles["admin-reports-page__section-header"]}>
+                        <h2 className={styles["admin-reports-page__section-title"]}>
+                            <MdAnalytics /> Doanh thu theo danh mục
+                        </h2>
+                    </div>
+                    <div className={styles["admin-reports-page__chart-container"]}>
+                        <ResponsiveContainer width="100%" height={320}>
+                            <PieChart>
+                                <Pie
+                                    data={stats.categoryRevenueData}
+                                    dataKey="value"
+                                    nameKey="name"
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius={62}
+                                    outerRadius={112}
+                                    label={({ name }) => name}
+                                >
+                                    {stats.categoryRevenueData.map((_, index) => (
+                                        <Cell key={index} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip formatter={formatCurrencyTooltip} />
+                                <Legend />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
+                </section>
 
                 {/* Top khách hàng thân thiết */}
                 <section className={styles["admin-reports-page__section"]}>
@@ -289,6 +406,46 @@ const AdminReportsPage: React.FC = () => {
                         </table>
                     </div>
                 </section>
+                </>
+                ) : (
+                <section className={styles["admin-reports-page__section"]}>
+                    <div className={styles["admin-reports-page__section-header"]}>
+                        <h2 className={styles["admin-reports-page__section-title"]}>
+                            <MdFileDownload /> Giao dịch thanh toán
+                        </h2>
+                    </div>
+                    <div className={styles["admin-reports-page__table-wrapper"]}>
+                        <table className={styles["admin-reports-page__table"]}>
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn</th>
+                                    <th>Khách hàng</th>
+                                    <th>Email</th>
+                                    <th>Phương thức</th>
+                                    <th>Thời gian</th>
+                                    <th style={{ textAlign: "right" }}>Số tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {stats.paymentTransactions.map((tx) => (
+                                    <tr key={tx.id}>
+                                        <td className={styles["admin-reports-page__product-name"]}>
+                                            {tx.orderNumber}
+                                        </td>
+                                        <td>{tx.customerName}</td>
+                                        <td>{tx.customerEmail ?? "N/A"}</td>
+                                        <td>{tx.paymentMethod}</td>
+                                        <td>{new Date(tx.createdAt).toLocaleString("vi-VN")}</td>
+                                        <td style={{ textAlign: "right", fontWeight: 700, color: "var(--primary)" }}>
+                                            {formatPrice(tx.totalAmount)}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                )}
             </div>
         </div>
     );
