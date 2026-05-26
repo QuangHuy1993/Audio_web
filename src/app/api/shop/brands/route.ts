@@ -13,6 +13,12 @@ import type { BrandFilterItemDto } from "@/types/shop";
 
 export const runtime = "nodejs";
 
+function normalizeLogoUrl(url: string | null) {
+  const trimmed = url?.trim();
+  if (!trimmed) return null;
+  return trimmed;
+}
+
 export async function GET() {
   try {
     const brands = await prisma.brand.findMany({
@@ -49,7 +55,7 @@ export async function GET() {
         id: b.id,
         name: b.name,
         slug: b.slug,
-        logoUrl: b.logoUrl ?? null,
+        logoUrl: normalizeLogoUrl(b.logoUrl),
         productCount: b._count.products,
       }))
       .sort((a, b) => {
@@ -68,4 +74,3 @@ export async function GET() {
     );
   }
 }
-

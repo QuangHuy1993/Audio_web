@@ -636,7 +636,7 @@ async function prepareVietQRSession(
     providerRef: createdSession.providerRef ?? undefined,
     bankInfo: {
       bankId: bankConfig.bankId,
-      bankName: `Ngân hàng ${bankConfig.bankId}`,
+      bankName: bankConfig.bankName,
       accountNo: bankConfig.accountNo,
       accountName: bankConfig.accountName,
     },
@@ -1041,4 +1041,3 @@ async function createOrderWithExistingCart(
 
   return { id: order.id };
 }
-

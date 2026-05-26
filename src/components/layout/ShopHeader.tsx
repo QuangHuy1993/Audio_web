@@ -84,6 +84,9 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
   const [isBrandsOpen, setIsBrandsOpen] = useState(false);
   const [isLoadingBrands, setIsLoadingBrands] = useState(false);
   const [brandsError, setBrandsError] = useState<string | null>(null);
+  const [failedBrandLogoIds, setFailedBrandLogoIds] = useState<Set<string>>(
+    () => new Set(),
+  );
   const [promotionItems, setPromotionItems] = useState<PromotionSummaryDto[] | null>(null);
   const [isPromotionsOpen, setIsPromotionsOpen] = useState(false);
   const [isLoadingPromotions, setIsLoadingPromotions] = useState(false);
@@ -552,12 +555,20 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                                           ]
                                         }
                                       >
-                                        {brand.logoUrl ? (
+                                        {brand.logoUrl && !failedBrandLogoIds.has(brand.id) ? (
                                           <Image
                                             src={brand.logoUrl}
                                             alt={brand.name}
                                             width={28}
                                             height={28}
+                                            unoptimized
+                                            onError={() => {
+                                              setFailedBrandLogoIds((previous) => {
+                                                const next = new Set(previous);
+                                                next.add(brand.id);
+                                                return next;
+                                              });
+                                            }}
                                           />
                                         ) : (
                                           <span>

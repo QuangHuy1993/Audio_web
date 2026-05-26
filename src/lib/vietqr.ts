@@ -21,16 +21,17 @@ export interface VietQRParams {
  */
 export function generateVietQRUrl(params: VietQRParams): string {
     const {
-        bankId,
+        bankId: rawBankId,
         accountNo,
         template = "compact2",
         amount,
         description,
         accountName
     } = params;
+    const bankId = rawBankId.trim().toLowerCase() === "mbbank" ? "mbbank" : rawBankId.trim();
 
     // Base URL format: https://img.vietqr.io/image/<BANK_ID>-<ACCOUNT_NO>-<TEMPLATE>.png
-    const baseUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-${template}.png`;
+    const baseUrl = `https://img.vietqr.io/image/${bankId}-${accountNo.trim()}-${template}.png`;
 
     const url = new URL(baseUrl);
 

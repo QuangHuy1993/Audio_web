@@ -5,6 +5,11 @@
 
 import { prisma } from "@/lib/prisma";
 
+export const DEFAULT_VIETQR_BANK_ID = "mbbank";
+export const DEFAULT_VIETQR_BANK_NAME = "MBBANK";
+export const DEFAULT_VIETQR_ACCOUNT_NO = "5584442039999";
+export const DEFAULT_VIETQR_ACCOUNT_NAME = "DUC UY AUDIO";
+
 /**
  * Lấy 1 setting theo key. Fallback về envFallback nếu không có trong DB.
  */
@@ -46,15 +51,20 @@ export async function getAdminSettings(
  */
 export async function getBankConfig(): Promise<{
     bankId: string;
+    bankName: string;
     accountNo: string;
     accountName: string;
 }> {
     const keys = ["qr_bank_id", "qr_account_no", "qr_account_name"];
     const map = await getAdminSettings(keys);
+    const bankId = (map["qr_bank_id"] ?? process.env.QR_BANK_ID ?? DEFAULT_VIETQR_BANK_ID).trim();
+    const accountNo = (map["qr_account_no"] ?? process.env.QR_ACCOUNT_NO ?? DEFAULT_VIETQR_ACCOUNT_NO).trim();
+    const accountName = (map["qr_account_name"] ?? process.env.QR_ACCOUNT_NAME ?? DEFAULT_VIETQR_ACCOUNT_NAME).trim();
 
     return {
-        bankId: map["qr_bank_id"] ?? process.env.QR_BANK_ID ?? "MB",
-        accountNo: map["qr_account_no"] ?? process.env.QR_ACCOUNT_NO ?? "",
-        accountName: map["qr_account_name"] ?? process.env.QR_ACCOUNT_NAME ?? "",
+        bankId: bankId || DEFAULT_VIETQR_BANK_ID,
+        bankName: DEFAULT_VIETQR_BANK_NAME,
+        accountNo: accountNo || DEFAULT_VIETQR_ACCOUNT_NO,
+        accountName: accountName || DEFAULT_VIETQR_ACCOUNT_NAME,
     };
 }

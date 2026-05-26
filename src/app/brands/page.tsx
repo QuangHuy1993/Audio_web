@@ -13,6 +13,9 @@ export default function BrandsPage() {
   const [items, setItems] = useState<BrandFilterItemDto[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [failedLogoIds, setFailedLogoIds] = useState<Set<string>>(
+    () => new Set(),
+  );
 
   useEffect(() => {
     const run = async () => {
@@ -78,12 +81,20 @@ export default function BrandsPage() {
                   }
                 >
                   <div className={styles["brands-page-page__card-logo"]}>
-                    {brand.logoUrl ? (
+                    {brand.logoUrl && !failedLogoIds.has(brand.id) ? (
                       <Image
                         src={brand.logoUrl}
                         alt={brand.name}
                         width={56}
                         height={56}
+                        unoptimized
+                        onError={() => {
+                          setFailedLogoIds((previous) => {
+                            const next = new Set(previous);
+                            next.add(brand.id);
+                            return next;
+                          });
+                        }}
                       />
                     ) : (
                       <span className={styles["brands-page-page__card-logo-text"]}>
@@ -109,4 +120,3 @@ export default function BrandsPage() {
     </div>
   );
 }
-

@@ -16,6 +16,10 @@ export const runtime = "nodejs";
 const DEFAULT_PAGE_SIZE = 10;
 const CLOUDINARY_BRANDS_FOLDER = "audio-ai/brands";
 
+function shouldUploadBeforeResponse() {
+  return process.env.VERCEL === "1";
+}
+
 type UpsertBrandBody = {
   name?: string;
   slug?: string;
@@ -318,23 +322,30 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    let uploadedLogoUrl: string | null = null;
     if (logoFile) {
       const brandId = created.id;
-      (async () => {
+      const logoBuffer = Buffer.from(await logoFile.arrayBuffer());
+      const uploadBrandLogo = async () => {
         try {
-          const arrayBuffer = await logoFile!.arrayBuffer();
-          const buffer = Buffer.from(arrayBuffer);
-          const result = await uploadImage(buffer, {
+          const result = await uploadImage(logoBuffer, {
             folder: CLOUDINARY_BRANDS_FOLDER,
           });
           await prisma.brand.update({
             where: { id: brandId },
             data: { logoUrl: result.secureUrl },
           });
+          uploadedLogoUrl = result.secureUrl;
         } catch (e) {
           console.error("[POST /api/admin/brands] Background logo upload failed:", e);
         }
-      })();
+      };
+
+      if (shouldUploadBeforeResponse()) {
+        await uploadBrandLogo();
+      } else {
+        void uploadBrandLogo();
+      }
     }
 
     const createdOut = created as typeof created & {
@@ -348,6 +359,7 @@ export async function POST(request: NextRequest) {
       {
         data: {
           ...createdOut,
+          logoUrl: uploadedLogoUrl ?? createdOut.logoUrl,
           createdAt: created.createdAt.toISOString(),
         },
       },

@@ -47,6 +47,10 @@ type PendingImageUpload = {
   sortOrder: number;
 };
 
+function shouldUploadBeforeResponse() {
+  return process.env.VERCEL === "1";
+}
+
 function parseProductFormBody(form: FormData): {
   name: string;
   slug: string;
@@ -563,7 +567,7 @@ export async function POST(request: NextRequest) {
         })),
       );
 
-      void (async () => {
+      const uploadProductImages = async () => {
         try {
           await Promise.all(
             pendingUploads.map(async ({ buffer, fileName, isPrimary, sortOrder }) => {
@@ -585,7 +589,13 @@ export async function POST(request: NextRequest) {
         } catch (e) {
           console.error("[POST /api/admin/products] Background product images upload failed:", e);
         }
-      })();
+      };
+
+      if (shouldUploadBeforeResponse()) {
+        await uploadProductImages();
+      } else {
+        void uploadProductImages();
+      }
     }
 
     return NextResponse.json(
@@ -597,7 +607,10 @@ export async function POST(request: NextRequest) {
             created.salePrice != null ? Number(created.salePrice) : null,
           createdAt: created.createdAt.toISOString(),
         },
-        imageUploadStatus: imagesToUpload.length > 0 ? "pending" : "none",
+        imageUploadStatus:
+          imagesToUpload.length > 0 && !shouldUploadBeforeResponse()
+            ? "pending"
+            : "none",
       },
       { status: 201 },
     );

@@ -23,6 +23,10 @@ type PendingImageUpload = {
   sortOrder: number;
 };
 
+function shouldUploadBeforeResponse() {
+  return process.env.VERCEL === "1";
+}
+
 type UpdateProductBody = {
   name?: string;
   slug?: string;
@@ -724,7 +728,7 @@ export async function PATCH(
         })),
       );
 
-      void (async () => {
+      const uploadProductImages = async () => {
         try {
           for (const { buffer, fileName, isPrimary, sortOrder } of pendingUploads) {
             const result = await uploadImage(buffer, {
@@ -744,7 +748,13 @@ export async function PATCH(
         } catch (e) {
           console.error("[PATCH /api/admin/products/[id]] Background product images upload failed:", e);
         }
-      })();
+      };
+
+      if (shouldUploadBeforeResponse()) {
+        await uploadProductImages();
+      } else {
+        void uploadProductImages();
+      }
     }
 
     if (deletedImages.length > 0) {
@@ -778,7 +788,10 @@ export async function PATCH(
 
     return NextResponse.json({
       success: true,
-      imageUploadStatus: newImagesToUpload.length > 0 ? "pending" : "none",
+      imageUploadStatus:
+        newImagesToUpload.length > 0 && !shouldUploadBeforeResponse()
+          ? "pending"
+          : "none",
     });
   } catch (error) {
     if (

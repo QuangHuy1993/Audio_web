@@ -44,7 +44,7 @@ export async function GET(
             providerRef: checkoutSession.providerRef,
             bankInfo: {
                 bankId: bankConfig.bankId,
-                bankName: `Ngân hàng ${bankConfig.bankId}`,
+                bankName: bankConfig.bankName,
                 accountNo: bankConfig.accountNo,
                 accountName: bankConfig.accountName,
             },
