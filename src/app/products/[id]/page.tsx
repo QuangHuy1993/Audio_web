@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ProductDetailPage from "@/features/shop/components/product-detail/ProductDetailPage";
+import { prisma } from "@/lib/prisma";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -7,16 +8,20 @@ type Props = {
 
 async function fetchProductMeta(id: string) {
   try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_APP_URL ??
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-
-    const res = await fetch(`${baseUrl}/api/shop/products/${id}`, {
-      next: { revalidate: 60 },
+    return await prisma.product.findUnique({
+      where: { id, status: "ACTIVE" },
+      select: {
+        name: true,
+        description: true,
+        seoTitle: true,
+        seoDescription: true,
+        images: {
+          where: { isPrimary: true },
+          select: { url: true },
+          take: 1,
+        },
+      },
     });
-
-    if (!res.ok) return null;
-    return res.json();
   } catch {
     return null;
   }
