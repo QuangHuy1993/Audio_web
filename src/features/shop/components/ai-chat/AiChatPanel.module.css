@@ -323,3 +323,23 @@
     display: none;
   }
 }
+
+.ai-chat-panel__cooldown-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(239, 83, 80, 0.1);
+  border: 1px solid rgba(239, 83, 80, 0.25);
+  border-radius: var(--border-radius-lg);
+  color: #ef5350;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  animation: ai-chat-panel__fadeIn 0.2s ease-in-out;
+}
+
+@keyframes ai-chat-panel__fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

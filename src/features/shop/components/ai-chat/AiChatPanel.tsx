@@ -70,6 +70,16 @@ export default function AiChatPanel({
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedProducts, setSuggestedProducts] = useState<SuggestedProductDto[]>([]);
+  const [cooldown, setCooldown] = useState(0);
+
+  // Countdown timer for 429 rate limit
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => {
+      setCooldown((c) => c - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -113,7 +123,16 @@ export default function AiChatPanel({
         }),
       });
 
-      if (!res.ok) throw new Error("AI không phản hồi.");
+      if (!res.ok) {
+        const errorPayload = (await res
+          .json()
+          .catch(() => null)) as { error?: unknown } | null;
+        const apiMessage =
+          typeof errorPayload?.error === "string" && errorPayload.error.trim()
+            ? errorPayload.error.trim()
+            : "AI không phản hồi. Vui lòng thử lại sau.";
+        throw new Error(apiMessage);
+      }
 
       const data = (await res.json()) as ProductAdviceResponseDto;
       const aiUiMsg: AiMessage = { id: `a-${Date.now()}`, role: "ai", text: data.answer };
@@ -124,11 +143,24 @@ export default function AiChatPanel({
       if (data.suggestedProducts && data.suggestedProducts.length > 0) {
         setSuggestedProducts(data.suggestedProducts);
       }
-    } catch {
+    } catch (error) {
+      const msgText =
+        error instanceof Error && error.message
+          ? error.message
+          : "Xin lỗi, tôi gặp sự cố khi xử lý câu hỏi của bạn. Vui lòng thử lại sau.";
+
+      const secondsMatch = msgText.match(/thử lại sau (\d+) giây/i);
+      if (secondsMatch) {
+        const secs = parseInt(secondsMatch[1], 10);
+        if (!isNaN(secs)) {
+          setCooldown(secs);
+        }
+      }
+
       const errorMsg: AiMessage = {
         id: `err-${Date.now()}`,
         role: "ai",
-        text: "Xin lỗi, tôi gặp sự cố khi xử lý câu hỏi của bạn. Vui lòng thử lại sau.",
+        text: msgText,
       };
       appendMessage(sessionKey, errorMsg);
     } finally {
@@ -144,6 +176,7 @@ export default function AiChatPanel({
   };
 
   const handleChipClick = (text: string) => {
+    if (cooldown > 0) return;
     void handleSend(text);
   };
 
@@ -152,10 +185,14 @@ export default function AiChatPanel({
     setSuggestedProducts([]);
   };
 
-  const placeholder =
+  const basePlaceholder =
     sessionKey === GENERAL_SESSION_KEY
       ? "Hỏi về setup hifi, thông số kỹ thuật, hay âm học phòng nghe..."
       : `Nhập câu hỏi về ${resolvedName}...`;
+
+  const placeholder = cooldown > 0
+    ? `Hệ thống bận. Vui lòng đợi trong ${cooldown} giây...`
+    : basePlaceholder;
 
   return (
     <div
@@ -259,6 +296,12 @@ export default function AiChatPanel({
 
       {/* Vùng input */}
       <div className={styles["ai-chat-panel__footer"]}>
+        {cooldown > 0 && (
+          <div className={styles["ai-chat-panel__cooldown-banner"]}>
+            <span>Hệ thống AI đang bận. Vui lòng đợi {cooldown} giây trước khi gửi câu hỏi tiếp theo.</span>
+          </div>
+        )}
+
         {/* Chip gợi ý nhanh - Ẩn sau khi bắt đầu chat */}
         {aiMessages.length <= 1 && (
           <div className={styles["ai-chat-panel__chips"]}>
@@ -268,6 +311,7 @@ export default function AiChatPanel({
                 type="button"
                 className={styles["ai-chat-panel__chip"]}
                 onClick={() => handleChipClick(chip)}
+                disabled={isLoading || cooldown > 0}
               >
                 {chip}
               </button>
@@ -291,14 +335,14 @@ export default function AiChatPanel({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            disabled={isLoading}
+            disabled={isLoading || cooldown > 0}
             aria-label="Nhập câu hỏi"
           />
           <button
             type="button"
             className={styles["ai-chat-panel__send-btn"]}
             onClick={() => void handleSend()}
-            disabled={!input.trim() || isLoading}
+            disabled={!input.trim() || isLoading || cooldown > 0}
             aria-label="Gửi câu hỏi"
           >
             <MdArrowUpward />

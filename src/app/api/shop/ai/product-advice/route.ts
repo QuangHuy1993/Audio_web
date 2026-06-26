@@ -30,7 +30,7 @@ import type {
   ProductAdviceMessage,
 } from "@/types/ai";
 
-const MAX_MESSAGES = 20;
+const MAX_MESSAGES = 10;
 /** Fallback nếu DB chưa có config */
 const DEFAULT_CATALOG_MAX_ITEMS = 30;
 
@@ -122,8 +122,8 @@ function buildSystemPrompt(
       : "Không có";
   const stockText = product.stock > 0 ? "Còn hàng" : "Tạm hết hàng";
   const descriptionTrimmed =
-    product.description.length > 1000
-      ? `${product.description.slice(0, 1000)}...`
+    product.description.length > 500
+      ? `${product.description.slice(0, 500)}...`
       : product.description;
 
   const brandSection =
@@ -198,7 +198,7 @@ function buildSystemPrompt(
             `   Giá: ${formatPriceVnd(displayPrice)}${item.salePrice ? " (đang giảm)" : ""}`,
           ];
           if (item.aiDescription) {
-            parts.push(`   Đặc tính: ${item.aiDescription.slice(0, 200)}`);
+            parts.push(`   Đặc tính: ${item.aiDescription.slice(0, 100)}`);
           }
           return parts.join("\n");
         })
@@ -277,7 +277,7 @@ function buildGeneralSystemPrompt(catalog: CatalogItem[]): string {
             `   Giá: ${formatPriceVnd(displayPrice)}${item.salePrice ? " (đang giảm)" : ""}`,
           ];
           if (item.aiDescription) {
-            parts.push(`   Đặc tính: ${item.aiDescription.slice(0, 200)}`);
+            parts.push(`   Đặc tính: ${item.aiDescription.slice(0, 100)}`);
           }
           return parts.join("\n");
         })
